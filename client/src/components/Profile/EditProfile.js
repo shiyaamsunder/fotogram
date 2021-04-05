@@ -29,7 +29,7 @@ const EditProfile = () => {
 	let token = localStorage.getItem("authToken");
 
 	useEffect(() => {
-		fetch(BASE_URL + USER + currentUser_id, {
+		fetch(USER + currentUser_id, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -70,7 +70,7 @@ const EditProfile = () => {
 		editedProfile.append("bio", profile.bio);
 		editedProfile.append("profile_picture", profile.profile_picture);
 		editedProfile.append("account_type", profile.account_type);
-		fetch(BASE_URL + USER_UPDATE + currentUser_id, {
+		fetch(USER_UPDATE + currentUser_id, {
 			method: "PUT",
 			body: editedProfile,
 			headers: {

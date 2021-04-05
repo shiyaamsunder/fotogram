@@ -40,7 +40,7 @@ const Feed = ({
 		});
 		globalDispatch({ type: "SET_FEEDS", payload: { feeds: new_feeds } });
 
-		fetch(BASE_URL + LIKE, {
+		fetch(LIKE, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -56,7 +56,7 @@ const Feed = ({
 	};
 
 	const postComment = (feed_id, user_id) => {
-		fetch(BASE_URL + COMMENT, {
+		fetch(COMMENT, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -77,7 +77,7 @@ const Feed = ({
 
 	const fetchComments = (id) => {
 		setisloading(true);
-		fetch(BASE_URL + FETCH_COMMENTS + id, {
+		fetch(FETCH_COMMENTS + id, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

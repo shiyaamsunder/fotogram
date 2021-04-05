@@ -42,7 +42,7 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 		});
 		globalDispatch({ type: "SET_FEEDS", payload: { feeds: _feeds } });
 
-		fetch(BASE_URL + LIKE, {
+		fetch(LIKE, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -59,7 +59,7 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 			});
 	};
 	const fetchComments = (id) => {
-		fetch(BASE_URL + FETCH_COMMENTS + id, {
+		fetch(FETCH_COMMENTS + id, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -78,7 +78,7 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 	};
 
 	const postComment = (feed_id, user_id) => {
-		fetch(BASE_URL + COMMENT, {
+		fetch(COMMENT, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

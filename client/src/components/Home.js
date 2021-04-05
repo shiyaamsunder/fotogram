@@ -27,7 +27,7 @@ const Home = (props) => {
 	useEffect(() => {
 		setisloading(true);
 		let isSub = true;
-		fetch(BASE_URL + `user/home/${user_id}`, {
+		fetch(`/user/home/${user_id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())

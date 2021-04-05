@@ -57,7 +57,7 @@ const Profile = () => {
 		setisloading(true);
 
 		window.scrollTo(0, 0);
-		fetch(BASE_URL + PROFILE + params.username, {
+		fetch(PROFILE + params.username, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -92,7 +92,7 @@ const Profile = () => {
 
 	useEffect(() => {
 		setisloading(true);
-		fetch(BASE_URL + USER + currentUser_id, {
+		fetch(USER + currentUser_id, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

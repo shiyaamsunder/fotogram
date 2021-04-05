@@ -53,7 +53,7 @@ const CreateFeed = (props) => {
 		feed.append("tags", state.tags.split(",").join());
 		feed.append("location", state.location);
 		feed.append("picture", state.picture);
-		fetch(BASE_URL + "feed/create", {
+		fetch("/feed/create", {
 			method: "POST",
 			body: feed,
 			headers: {
