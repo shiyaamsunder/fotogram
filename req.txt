@@ -1,0 +1,25 @@
+1. User
+    -Login x
+    -Registration x
+
+2. Feed
+    -Upload x
+    -View x
+    -Like x
+    -Comment x
+
+3. Connection
+    -Follow x
+    -Unfollow x
+
+4. Security
+    -Privacy
+
+5.Chat
+    -Send 
+    -View
+
+6.Profile
+    -Own Feeds
+    -Own Info
+    -Update Info

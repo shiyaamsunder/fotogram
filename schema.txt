@@ -1,0 +1,34 @@
+1. User 
+    -name
+    -username
+    -email
+    -password
+    -bio
+    -profile_pic
+    -account_type
+
+2. Feed
+    -picture
+    -caption
+    -hashtags
+    -location
+    -tag
+    -user_id( reference )
+
+3. Like
+    -feed_id(reference)
+    -user_id(reference)
+
+4. Comment
+    -feed_id(reference)
+    -user_id(reference)
+    -actual
+
+5.Connection
+    -inf_user_id(reference)
+    -foll_user_id(reference)
+
+6.Chat 
+    -send_user_id(reference)
+    -rec_user_id(reference)
+    -chat_message
