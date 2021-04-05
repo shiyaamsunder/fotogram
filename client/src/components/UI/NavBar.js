@@ -26,7 +26,7 @@ const NavBar = () => {
 
 	useEffect(() => {
 		let mounted = true;
-		fetch(BASE_URL + USER + `${id}`, {
+		fetch(USER + `${id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())
