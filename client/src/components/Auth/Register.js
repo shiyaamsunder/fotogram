@@ -27,7 +27,7 @@ const Register = () => {
 
 	const submitForm = () => {
 		setloading(true);
-		fetch(BASE_URL + REGISTER, {
+		fetch(REGISTER, {
 			method: "POST",
 			body: JSON.stringify(state),
 			headers: { "Content-Type": "application/json" },

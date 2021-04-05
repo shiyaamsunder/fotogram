@@ -24,7 +24,7 @@ const Login = (props) => {
 
 	const submitForm = () => {
 		setloading(true);
-		fetch(BASE_URL + LOGIN, {
+		fetch(LOGIN, {
 			method: "POST",
 			body: JSON.stringify(state),
 			headers: { "Content-Type": "application/json" },
