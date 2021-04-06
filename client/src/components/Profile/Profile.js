@@ -1,18 +1,21 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { BASE_URL, PROFILE, USER, FOLLOW } from "../../config/urls";
+import { BASE_URL, PROFILE, USER, FOLLOW, UNFOLLOW } from "../../config/urls";
 import { Ripple } from "react-css-spinners";
 import FeedModal from "../Feed/FeedModal";
 import Backdrop from "../UI/Backdrop";
 import Loading from "../UI/Loading";
 import TopBarProgress from "react-topbar-progress-indicator";
+import Context from "../../store/Context";
 
 const Profile = () => {
 	let params = useParams();
 	const history = useHistory();
 	const location = useLocation();
 	let token = localStorage.getItem("authToken");
+	const [followStatus, setFollowStatus] = useState("Follow");
+	const [followLoading, setFollowLoading] = useState(false);
 	const [profile, setprofile] = useState({
 		feeds: [],
 		followers: [],
@@ -36,6 +39,7 @@ const Profile = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentFeed, setCurrentFeed] = useState({});
 	let currentUser_id = localStorage.getItem("id");
+	const { globalState, globalDispatch } = useContext(Context);
 
 	// Loading bar config
 	TopBarProgress.config({
@@ -72,6 +76,8 @@ const Profile = () => {
 					bio: data.user.bio,
 				});
 
+				globalDispatch({ type: "SET_FEEDS", payload: { feeds: data.feeds } });
+
 				let accepted_followers = data.followers.filter((follower) => {
 					return follower.status === 1;
 				});
@@ -83,6 +89,28 @@ const Profile = () => {
 				data.accepted_followers = accepted_followers;
 				data.requested_followers = requested_followers;
 				setprofile(data);
+
+				if (currentUser_id !== data.user._id) {
+					let checkInAcceptedFollowers = data.accepted_followers.find((ele) => {
+						return ele.status === 1 && ele.follower._id;
+					});
+
+					if (checkInAcceptedFollowers === undefined) {
+						let checkInRequestedFollowers = data.requested_followers.find(
+							(ele) => {
+								return ele.status === 0 && ele.follower._id;
+							}
+						);
+						if (checkInRequestedFollowers !== undefined) {
+							setFollowStatus("Cancel request");
+						} else {
+							setFollowStatus("Follow");
+						}
+					} else {
+						setFollowStatus("Unfollow");
+					}
+				}
+
 				setisloading(false);
 			})
 			.catch((err) => {
@@ -118,18 +146,61 @@ const Profile = () => {
 		setIsOpen(!isOpen);
 	};
 
-	const followUser = (influencer_id, user_id) => {
-		console.log(influencer_id, user_id);
+	const connectionAction = (influencer_id, user_id) => {
+		if (followStatus === "Follow") {
+			followUser(influencer_id, user_id);
+		}
 
-		// fetch(BASE_URL + FOLLOW, {
-		// 	headers: {
-		// 		method: "POST",
-		// 		Authorization: `Bearer ${token}`,
-		// 	},
-		// })
-		// 	.then((res) => res.json())
-		// 	.then((data) => console.log(data));
+		if (followStatus === "Cancel request" || followStatus === "Unfollow") {
+			unFollowUser(influencer_id, user_id);
+		}
 	};
+	const followUser = (influencer_id, user_id) => {
+		setFollowLoading(true);
+		fetch(FOLLOW, {
+			method: "POST",
+			body: JSON.stringify({
+				influencer: influencer_id,
+				follower: user_id,
+			}),
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setFollowLoading(false);
+
+				if (data.message === "Request Sent") {
+					setFollowStatus("Cancel Request");
+				} else {
+					setFollowStatus("Unfollow");
+				}
+			});
+	};
+
+	const unFollowUser = (influencer_id, user_id) => {
+		let body = {
+			influencer: influencer_id,
+			follower: user_id,
+		};
+		setFollowLoading(true);
+		fetch(UNFOLLOW, {
+			method: "POST",
+			body: JSON.stringify(body),
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setFollowStatus("Follow");
+				setFollowLoading(false);
+			});
+	};
+
 	return !isLoading ? (
 		<>
 			<motion.div
@@ -138,6 +209,7 @@ const Profile = () => {
 				exit={{ x: "100vw" }}
 				className="w-full md:w-3/4 h-screen mt-14 mx-auto mb-16"
 			>
+				{followLoading ? <TopBarProgress /> : null}
 				<div className="w-full bg-gray-100 h-auto p-2 mx-auto rounded-b-md">
 					<div className="flex h-18 items-center justify-between">
 						<img
@@ -195,9 +267,9 @@ const Profile = () => {
 					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
 						<button
 							className="btn bg-purple-600 text-gray-100 w-full mx-2"
-							onClick={() => followUser(user.id, currentUser.id)}
+							onClick={() => connectionAction(user.id, currentUser.id)}
 						>
-							Follow
+							{followStatus}
 						</button>
 
 						<button
@@ -209,26 +281,31 @@ const Profile = () => {
 					</div>
 				)}
 
-				<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-1 ">
-					{profile.feeds &&
-						profile.feeds.map((feed) => {
-							return (
-								<img
-									src={feed.picture}
-									key={feed._id}
-									alt=""
-									className=" w-32 h-32 md:w-full md:h-48 object-cover cursor-pointer"
-									onClick={() => {
-										toggleModal();
-										setCurrentFeed(feed);
-									}}
-								/>
-							);
-						})}
-				</div>
-
-				{profile.feeds.length === 0 && (
-					<h1 className="text-center font-bold text-xl">No Posts</h1>
+				{user.account_type === "private" && user.id !== currentUser_id ? (
+					<h1 className="font-bold text-xl text-center">
+						This account is private
+					</h1>
+				) : (
+					<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-1 ">
+						{profile.feeds && profile.feeds.length > 0 ? (
+							profile.feeds.map((feed) => {
+								return (
+									<img
+										src={feed.picture}
+										key={feed._id}
+										alt=""
+										className=" w-32 h-32 md:w-full md:h-48 object-cover cursor-pointer"
+										onClick={() => {
+											toggleModal();
+											setCurrentFeed(feed);
+										}}
+									/>
+								);
+							})
+						) : (
+							<h1 className="text-center font-bold text-xl">No Posts</h1>
+						)}
+					</div>
 				)}
 			</motion.div>
 			{isOpen ? <Backdrop toggle={toggleModal} /> : null}
@@ -237,7 +314,6 @@ const Profile = () => {
 					id={currentFeed._id}
 					user={user}
 					currentUser_id={currentUser_id}
-					feed={currentFeed}
 				/>
 			) : null}
 		</>

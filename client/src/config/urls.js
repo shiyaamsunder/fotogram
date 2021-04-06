@@ -1,5 +1,5 @@
 module.exports = {
-	BASE_URL: "http://localhost:8000/",
+	BASE_URL: "http://localhost:8000",
 	REGISTER: "/user/register/",
 	LOGIN: "/user/login/",
 	USER: "/user/me/",
@@ -11,4 +11,5 @@ module.exports = {
 	FETCH_COMMENTS: "/feed/comments/",
 	COMMENT: "/feed/comment/",
 	FOLLOW: "/connection/create/",
+	UNFOLLOW: "/connection/unfollow/",
 };

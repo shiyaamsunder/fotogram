@@ -4,7 +4,7 @@ import Comment from "./Comment";
 import { BASE_URL, FETCH_COMMENTS, COMMENT, LIKE } from "../../config/urls";
 import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
 import Context from "../../store/Context";
-const FeedModal = ({ id, user, currentUser_id, feed }) => {
+const FeedModal = ({ id, user, currentUser_id }) => {
 	const { profile_picture, username } = user;
 	const [currentFeed, setcurrentFeed] = useState({});
 	const [comments, setcomments] = useState([]);
@@ -23,8 +23,10 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 	}, [comment]);
 
 	useEffect(() => {
-		const _feed = feeds.filter((feed) => feed._id == id);
-		setcurrentFeed(_feed[0]);
+		const _feed = feeds.find((feed) => {
+			return feed._id == id;
+		});
+		setcurrentFeed(_feed);
 		fetchComments(id);
 	}, []);
 
@@ -100,7 +102,7 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 	return (
 		<div className=" w-full h-auto md:w-3/4 mx-auto md:h-3/4  rounded-lg bg-white fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-2 gap-4">
 			<div className="h-full w-full flex items-center justify-center pl-3 pt-3 pb-3 mx-auto">
-				<img src={currentFeed.picture} className="w-full" alt="" />
+				<img src={currentFeed?.picture} className="w-full" alt="" />
 			</div>
 
 			<div className="border-l pt-2 border-gray-200 flex flex-col">
@@ -129,7 +131,7 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 
 				<div className="flex flex-col h-1/4 my-2 p-2 border-t border-gray-200">
 					<div className="flex ">
-						{currentFeed.already_liked ? (
+						{currentFeed?.already_liked ? (
 							<IoHeart
 								className="text-purple-500 hover:text-purple-400 cursor-pointer mr-2"
 								size={"1.6rem"}
@@ -147,20 +149,19 @@ const FeedModal = ({ id, user, currentUser_id, feed }) => {
 							/>
 						)}
 					</div>
-
 					<span className="ml-1">
-						{!currentFeed.likeCount
+						{!currentFeed?.likeCount
 							? null
-							: currentFeed.likeCount > 1
-							? `${currentFeed.likeCount} likes`
-							: `${currentFeed.likeCount} like`}
+							: currentFeed?.likeCount > 1
+							? `${currentFeed?.likeCount} likes`
+							: `${currentFeed?.likeCount} like`}
 					</span>
 					<p className="ml-1">
-						{currentFeed.caption ? (
+						{currentFeed?.caption ? (
 							<span className="font-bold text-md mr-1">{username}</span>
 						) : null}
 
-						{currentFeed.caption}
+						{currentFeed?.caption}
 					</p>
 				</div>
 
