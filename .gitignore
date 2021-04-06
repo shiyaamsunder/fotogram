@@ -6,6 +6,9 @@ node_modules/
 /.pnp
 .pnp.js
 
+feed_pictures/
+profile_pictures/
+
 # testing
 /coverage
 
