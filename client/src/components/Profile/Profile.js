@@ -173,7 +173,7 @@ const Profile = () => {
 				setFollowLoading(false);
 
 				if (data.message === "Request Sent") {
-					setFollowStatus("Cancel Request");
+					setFollowStatus("Cancel request");
 				} else {
 					setFollowStatus("Unfollow");
 				}
@@ -250,7 +250,7 @@ const Profile = () => {
 				{location.pathname.split("/")[2] === currentUser.username ? (
 					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
 						<button
-							className="btn bg-purple-600 text-gray-100 w-full mx-2"
+							className="btn btn-md btn-primary w-full mx-2"
 							onClick={redirectToEditProfile}
 						>
 							Edit profile
@@ -258,7 +258,7 @@ const Profile = () => {
 
 						<button
 							onClick={handleLogout}
-							className="btn bg-purple-600 text-gray-100 w-full mx-2"
+							className="btn btn-md btn-primary w-full mx-2"
 						>
 							Logout
 						</button>
@@ -266,7 +266,11 @@ const Profile = () => {
 				) : (
 					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
 						<button
-							className="btn bg-purple-600 text-gray-100 w-full mx-2"
+							className={`btn btn-md ${
+								followStatus === "Unfollow" || followStatus === "Cancel request"
+									? "btn-secondary"
+									: "btn-primary"
+							} w-full mx-2`}
 							onClick={() => connectionAction(user.id, currentUser.id)}
 						>
 							{followStatus}
@@ -274,7 +278,7 @@ const Profile = () => {
 
 						<button
 							// onClick={handleLogout}
-							className="btn bg-purple-600 text-gray-100 w-full mx-2"
+							className="btn btn-md btn-primary w-full mx-2"
 						>
 							Message
 						</button>
