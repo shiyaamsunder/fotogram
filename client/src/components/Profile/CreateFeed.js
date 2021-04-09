@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Ripple } from "react-css-spinners";
-import { LOGIN, BASE_URL } from "../../config/urls";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { useHistory } from "react-router-dom";
 import Error from "../UI/Error";
 import Success from "../UI/Success";
 
 import { motion } from "framer-motion";
+import TopBarProgress from "react-topbar-progress-indicator";
 
 const CreateFeed = (props) => {
 	const [state, setstate] = useState({
@@ -15,29 +15,40 @@ const CreateFeed = (props) => {
 		hashtags: "",
 		tags: "",
 		location: "",
+		user: "",
+	});
+
+	// Loading bar config
+	TopBarProgress.config({
+		barColors: {
+			0: "#8b5cf6",
+			0.5: "#7c3aed",
+			"1.0": "#a78bfa",
+		},
+		shadowBlur: 5,
 	});
 
 	const [file, setfile] = useState();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
+		setstate({
+			...state,
+			user: localStorage.getItem("id"),
+		});
 	}, []);
 
-	let feed = new FormData();
-	feed.append("user", localStorage.getItem("id"));
 	const [loading, setloading] = useState(false);
 	const [error, seterr] = useState("");
 	const [success, setsuccess] = useState("");
+	const [preview, setPreview] = useState();
 	const history = useHistory();
 
 	const handleChange = (event) => {
 		let val = event.target.value;
 		if (event.target.name === "picture") {
-			setfile(URL.createObjectURL(event.target.files[0]));
-			setstate({
-				...state,
-				picture: event.target.files[0],
-			});
+			const file = event.target.files[0];
+			previewFile(file);
 		} else {
 			setstate({
 				...state,
@@ -46,17 +57,25 @@ const CreateFeed = (props) => {
 		}
 	};
 
+	const previewFile = (file) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			setPreview(reader.result);
+			setstate({
+				...state,
+				picture: reader.result,
+			});
+		};
+	};
+
 	const submitForm = () => {
-		// setloading(true);
-		feed.append("caption", state.caption);
-		feed.append("hashtags", state.hashtags.split(",").join());
-		feed.append("tags", state.tags.split(",").join());
-		feed.append("location", state.location);
-		feed.append("picture", state.picture);
+		setloading(true);
 		fetch("/feed/create", {
 			method: "POST",
-			body: feed,
+			body: JSON.stringify(state),
 			headers: {
+				"Content-Type": "application/json",
 				Authorization: `Bearer ${localStorage.getItem("authToken")}`,
 			},
 		})
@@ -76,7 +95,8 @@ const CreateFeed = (props) => {
 						tags: "",
 						location: "",
 					});
-					setfile("");
+					setPreview("");
+					setloading(false);
 				}
 			})
 			.catch((err) => {
@@ -92,10 +112,10 @@ const CreateFeed = (props) => {
 		>
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
-
-			{file ? (
+			{loading && <TopBarProgress />}
+			{preview ? (
 				<img
-					src={file}
+					src={preview}
 					alt=""
 					className="w-52 mx-auto h-52 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md object-contain"
 				/>
