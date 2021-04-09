@@ -210,7 +210,7 @@ const EditProfile = () => {
 			</div>
 			<button
 				onClick={submitForm}
-				className="btn bg-purple-600 text-gray-100 w-2/6 md:w-40 mx-2 mt-6"
+				className="btn btn-primary btn-md  mx-2 mt-6"
 			>
 				Save Changes
 			</button>

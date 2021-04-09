@@ -106,7 +106,7 @@ const CreateFeed = (props) => {
 			)}
 
 			<div className="flex flex-col w-3/4 md:w-2/4 h-auto bg-white rounded-lg p-4 shadow-lg">
-				<div className="flex flex-col h-auto mt-5 mb-5">
+				<div className="flex flex-col h-auto">
 					<input
 						type="text"
 						className="input"
@@ -160,7 +160,7 @@ const CreateFeed = (props) => {
 					</div>
 					<button
 						onClick={submitForm}
-						className="btn bg-purple-600 text-white mt-2 h-auto"
+						className="btn btn-primary btn-md text-white mt-2 h-auto"
 					>
 						{loading ? <Ripple size={20} thickness={3} /> : "Post"}
 					</button>
