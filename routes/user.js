@@ -18,6 +18,8 @@ const router = express.Router();
 const formidable = require("formidable");
 const fs = require("fs");
 
+const { cloudinary } = require("../utils/cloudinary.config");
+
 // user routes
 // register
 router.post("/register", async (req, res, next) => {
@@ -221,45 +223,44 @@ router.get("/home/:id", verifyToken, async (req, res, next) => {
 });
 
 //update
-router.put("/update/:id", verifyToken, (req, res, next) => {
-	let form = new formidable.IncomingForm();
-	let updateUser = req.body;
+router.put("/update/:id", verifyToken, async (req, res, next) => {
+	let profile = req.body;
 	let id = req.params.id;
 
-	form.parse(req, function (err, editedProfile, files) {
-		try {
-			if (!editedProfile) throw new BadRequest("Empty Object");
-			if (files.profile_picture === undefined) {
-				userModel.updateOne({ _id: id }, { $set: editedProfile }).then(() => {
-					res.send({ message: "Details updated", code: 1 });
-				});
-			} else {
-				let tempPath = files.profile_picture.path;
-				let extension = files.profile_picture.name.split(".")[1];
-				let newPath = `./profile_pictures/${id}.${extension}`;
-				fs.rename(tempPath, newPath, () => {
-					editedProfile.profile_picture = `http://localhost:8000/profile_pictures/${id}.${extension}`;
+	try {
+		if (!profile) throw new BadRequest("EMpty object");
 
-					userModel
-						.findOneAndUpdate(
-							{ _id: id },
-							{ $set: editedProfile },
-							{ returnOriginal: false }
-						)
-						.then((err, documents) => {
-							res.send({
-								message: "Details updated",
-								code: 1,
-								user: documents,
-							});
-						});
+		if (profile.profile_picture === undefined) {
+			userModel.updateOne({ _id: id }, { $set: profile }).then(() => {
+				res.send({ message: "Details updated", code: 1 });
+			});
+		} else {
+			const fileStr = profile.profile_picture;
+			const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+				upload_preset: "profile_pictures",
+				public_id: id,
+				quality: 60,
+			});
+			profile.profile_picture = uploadResponse.secure_url;
+
+			userModel
+				.findOneAndUpdate(
+					{ _id: id },
+					{ $set: profile },
+					{ returnOriginal: false }
+				)
+				.then((err, documents) => {
+					res.send({
+						message: "Details updated",
+						code: 1,
+						user: documents,
+					});
 				});
-			}
-		} catch (err) {
-			console.log(err);
-			next(err);
 		}
-	});
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
 });
 
 module.exports = router;

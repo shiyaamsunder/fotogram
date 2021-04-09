@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,18 +7,30 @@
   box-sizing: 0;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family:'Lexend' , sans-serif , -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-}
+
 
 .btn{
-  @apply py-2 px-4 rounded-md font-bold disabled:opacity-70;
+  @apply rounded-md font-semibold disabled:opacity-70;
+}
+
+.btn-primary{
+  @apply bg-purple-500 text-white
+}
+
+.btn-secondary{
+  @apply bg-gray-100 text-purple-500 border-2 border-purple-500
+}
+
+.btn-sm{
+ @apply py-2 px-7
+}
+
+.btn-md{
+  @apply py-2 px-12
+}
+
+.btn-lg{
+  @apply py-2 px-20
 }
 
 .input{
@@ -29,7 +40,7 @@ body {
 
 
 nav a {
-  @apply hover:text-purple-500;
+  @apply hover:text-purple-600;
   @apply text-gray-600;
 }
 

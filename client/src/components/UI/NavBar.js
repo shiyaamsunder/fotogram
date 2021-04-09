@@ -82,7 +82,7 @@ const NavBar = () => {
 			</div>
 
 			<header className="flex items-center fixed bottom-0 md:top-0 w-full h-14 py-2 px-4 shadow-sm bg-gray-200">
-				<div className="hidden md:flex flex-grow text-3xl text-purple-400 font-semibold">
+				<div className="hidden md:flex flex-grow text-3xl font-sans text-purple-500 font-semibold">
 					Fotogram
 				</div>
 

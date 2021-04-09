@@ -12,37 +12,37 @@ const router = express.Router();
 
 const formidable = require("formidable");
 const fs = require("fs");
+const { cloudinary } = require("../utils/cloudinary.config");
 
 // feed routes
 
 //create feed
-router.post("/create", verifyToken, (req, res, next) => {
-	let form = new formidable.IncomingForm();
 
-	form.parse(req, function (err, feed, files) {
-		try {
-			if (!feed || !files.picture) {
-				throw new BadRequest("Missing fields");
-			}
+router.post("/create", verifyToken, async (req, res, next) => {
+	let feed = req.body;
 
-			let feedObj = new feedModel(feed);
-			feedObj.save().then((data) => {
-				let tempPath = files.picture.path;
-				let extension = files.picture.name.split(".")[1];
-				let newPath = `./feed_pictures/${data._id}.${extension}`;
-
-				fs.rename(tempPath, newPath, () => {
-					feed.picture = `http://localhost:8000/feed_pictures/${data._id}.${extension}`;
-
-					feedModel.updateOne({ _id: data._id }, { $set: feed }).then(() => {
-						res.send({ message: "Feed uploaded", code: 1 });
-					});
-				});
-			});
-		} catch (err) {
-			next(err);
+	try {
+		if (!feed || !feed.picture) {
+			throw new BadRequest("Missing fields");
 		}
-	});
+
+		let feedObj = new feedModel(feed);
+		feedObj.save().then(async (data) => {
+			let new_name = data._id;
+			const fileStr = feed.picture;
+			const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+				upload_preset: "feed_pictures",
+				public_id: new_name,
+				quality: 60,
+			});
+			feed.picture = uploadResponse.secure_url;
+			feedModel.updateOne({ _id: data._id }, { $set: feed }).then(() => {
+				res.send({ message: "Feed uploaded", code: 1 });
+			});
+		});
+	} catch (err) {
+		next(err);
+	}
 });
 
 //like feed

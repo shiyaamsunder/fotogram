@@ -13,17 +13,15 @@ const EditProfile = () => {
 		username: "",
 		bio: "",
 		profile_picture: "",
+		account_type: "",
+		extension: "",
 	});
 	const history = useHistory();
 	const [error, seterr] = useState("");
 	const [success, setsuccess] = useState("");
 
 	const { globalState, globalDispatch } = useContext(Context);
-	const user = globalState.user;
-
-	const [file, setfile] = useState();
-	let editedProfile = new FormData();
-	// editedProfile.append("user", localStorage.getItem("id"));
+	const [preview, setPreview] = useState();
 
 	let currentUser_id = localStorage.getItem("id");
 	let token = localStorage.getItem("authToken");
@@ -50,11 +48,8 @@ const EditProfile = () => {
 	const handleChange = (event) => {
 		let val = event.target.value;
 		if (event.target.name === "picture") {
-			setfile(URL.createObjectURL(event.target.files[0]));
-			setprofile({
-				...profile,
-				profile_picture: event.target.files[0],
-			});
+			const file = event.target.files[0];
+			previewFile(file);
 		} else {
 			setprofile({
 				...profile,
@@ -63,22 +58,30 @@ const EditProfile = () => {
 		}
 	};
 
+	const previewFile = (file) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			setPreview(reader.result);
+			setprofile({
+				...profile,
+				profile_picture: reader.result,
+			});
+		};
+	};
+
 	const submitForm = () => {
-		// setloading(true);
-		editedProfile.append("username", profile.username);
-		editedProfile.append("name", profile.name);
-		editedProfile.append("bio", profile.bio);
-		editedProfile.append("profile_picture", profile.profile_picture);
-		editedProfile.append("account_type", profile.account_type);
 		fetch(USER_UPDATE + currentUser_id, {
 			method: "PUT",
-			body: editedProfile,
+			body: JSON.stringify(profile),
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+				"Content-Type": "application/json",
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				console.log(data);
 				seterr(null);
 				setsuccess(null);
 				if (data.status === "error") {
@@ -104,10 +107,11 @@ const EditProfile = () => {
 		<div className="flex flex-col items-center mt-16 p-8 mb-16 w-full md:w-1/2 mx-auto">
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
+			{console.log(profile)}
 			<div className="flex flex-col items-center mb-3">
 				{profile.profile_picture !== "" ? (
 					<img
-						src={!file ? profile.profile_picture : file}
+						src={!preview ? profile.profile_picture : preview}
 						alt="profile picture"
 						className="rounded-full object-cover w-28 h-28 mb-2"
 					/>
@@ -210,7 +214,7 @@ const EditProfile = () => {
 			</div>
 			<button
 				onClick={submitForm}
-				className="btn bg-purple-600 text-gray-100 w-2/6 md:w-40 mx-2 mt-6"
+				className="btn btn-primary btn-md  mx-2 mt-6"
 			>
 				Save Changes
 			</button>

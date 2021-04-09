@@ -68,12 +68,12 @@ router.post("/action", verifyToken, async (req, res, next) => {
 router.post("/unfollow", verifyToken, async (req, res, next) => {
 	let body = req.body;
 	let message = "";
-	let { id } = body;
+	let { influencer, follower } = body;
 
 	try {
-		if (!id) throw new BadRequest("Missing id field");
+		if (!influencer || !follower) throw new BadRequest("Missing fields");
 
-		await connectionModel.deleteOne({ _id: id });
+		await connectionModel.deleteOne(body);
 		message = "Deleted";
 		res.send({ message, code: 1 });
 	} catch (err) {
