@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoChatbubbleOutline, IoHeartOutline, IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import TopBarProgress from "react-topbar-progress-indicator";
 import { BASE_URL, LIKE, FETCH_COMMENTS, COMMENT } from "../../config/urls";
 import Context from "../../store/Context";
 import Loading from "../UI/Loading";
@@ -176,7 +177,7 @@ const Feed = ({
 				</div>
 
 				<div className="flex flex-col items-center justify-center w-full mx-2 p-2">
-					{isOpen && isLoading ? <Loading /> : null}
+					{isOpen && isLoading ? <TopBarProgress /> : null}
 					{isOpen && comments.length == 0 ? (
 						<span className="text-center text-sm font-semibold h-auto p-1 w-3/4 rounded-md mx-auto border border-gray-200">
 							Wow, so empty
@@ -196,7 +197,7 @@ const Feed = ({
 									onChange={(event) => handleChange(event)}
 								/>
 								<button
-									className="text-white bg-purple-600 text-sm p-1 rounded-md disabled:opacity-30"
+									className="btn btn-primary btn-sm text-sm p-1 rounded-md "
 									disabled={isDisabled}
 									onClick={() => postComment(feed_id, current_user_id)}
 								>
