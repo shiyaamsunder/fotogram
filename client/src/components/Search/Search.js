@@ -1,12 +1,82 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import TopBarProgress from "react-topbar-progress-indicator";
+import { RANDOM } from "../../config/urls";
+import Context from "../../store/Context";
+import FeedModal from "../Feed/FeedModal";
+import Backdrop from "../UI/Backdrop";
 
 const Search = () => {
+	const [randomFeeds, setRandomFeeds] = useState();
+	const [isOpen, setIsOpen] = useState(false);
+	const [currentFeed, setCurrentFeed] = useState();
+	const { globalDispatch } = useContext(Context);
+	const [loading, setloading] = useState(false);
+
+	let token = localStorage.getItem("authToken");
+	let user_id = localStorage.getItem("id");
+
+	TopBarProgress.config({
+		barColors: {
+			0: "#8b5cf6",
+			0.5: "#7c3aed",
+			"1.0": "#a78bfa",
+		},
+		shadowBlur: 5,
+	});
+
+	useEffect(() => {
+		setloading(true);
+		fetch(RANDOM, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setRandomFeeds(data.feeds);
+				console.log(data.feeds);
+				globalDispatch({
+					type: "SET_RANDOM_FEEDS",
+					payload: { random: data.feeds },
+				});
+				setloading(false);
+			})
+			.catch((err) => console.log(err));
+	}, []);
+
+	const toggleModal = () => {
+		setIsOpen(!isOpen);
+	};
 	return (
 		<div className="mt-14 flex flex-col items-center ">
+			{loading ? <TopBarProgress /> : null}
 			<input type="text" className="input" />
-			<h1 className="font-bold text-3xl text-purple-600">
-				Search feature coming soon
-			</h1>
+			<div className="w-full md:w-3/4 grid grid-cols-3 mx-auto gap-4 h-auto mt-20 ">
+				{randomFeeds &&
+					randomFeeds.map((feed) => {
+						return (
+							<img
+								src={feed.picture}
+								key={feed._id}
+								alt=""
+								className="w-32 h-32 md:w-3/4 mx-auto md:h-48 md object-cover cursor-pointer"
+								onClick={() => {
+									toggleModal();
+									setCurrentFeed(feed);
+								}}
+							/>
+						);
+					})}
+			</div>
+
+			{isOpen ? <Backdrop toggle={toggleModal} /> : null}
+			{isOpen ? (
+				<FeedModal
+					id={currentFeed._id}
+					user={currentFeed.user}
+					currentUser_id={user_id}
+				/>
+			) : null}
 		</div>
 	);
 };
