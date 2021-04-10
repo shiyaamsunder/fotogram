@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import TopBarProgress from "react-topbar-progress-indicator";
 
-import { BASE_URL } from "../config/urls";
+import { HOME } from "../config/urls";
 import Feed from "./Feed/Feed";
 import Context from "../store/Context";
 import Loading from "./UI/Loading";
@@ -27,7 +27,7 @@ const Home = (props) => {
 	useEffect(() => {
 		setisloading(true);
 		let isSub = true;
-		fetch(`/user/home/${user_id}`, {
+		fetch(`${HOME}${user_id}/`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())
