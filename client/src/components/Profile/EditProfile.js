@@ -6,8 +6,17 @@ import { BASE_URL, USER, USER_UPDATE } from "../../config/urls";
 import Error from "../UI/Error";
 import Success from "../UI/Success";
 import Context from "../../store/Context";
+import TopBarProgress from "react-topbar-progress-indicator";
 
 const EditProfile = () => {
+	TopBarProgress.config({
+		barColors: {
+			0: "#8b5cf6",
+			0.5: "#7c3aed",
+			"1.0": "#a78bfa",
+		},
+		shadowBlur: 5,
+	});
 	const [profile, setprofile] = useState({
 		name: "",
 		username: "",
@@ -19,6 +28,7 @@ const EditProfile = () => {
 	const history = useHistory();
 	const [error, seterr] = useState("");
 	const [success, setsuccess] = useState("");
+	const [loading, setloading] = useState(false);
 
 	const { globalState, globalDispatch } = useContext(Context);
 	const [preview, setPreview] = useState();
@@ -27,6 +37,7 @@ const EditProfile = () => {
 	let token = localStorage.getItem("authToken");
 
 	useEffect(() => {
+		setloading(true);
 		fetch(USER + currentUser_id, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -42,6 +53,7 @@ const EditProfile = () => {
 					account_type: data.account_type,
 				});
 				globalDispatch({ type: "SET_USER", payload: { user: data } });
+				setloading(false);
 			});
 	}, []);
 
@@ -71,6 +83,7 @@ const EditProfile = () => {
 	};
 
 	const submitForm = () => {
+		setloading(true);
 		fetch(USER_UPDATE + currentUser_id, {
 			method: "PUT",
 			body: JSON.stringify(profile),
@@ -85,11 +98,12 @@ const EditProfile = () => {
 				seterr(null);
 				setsuccess(null);
 				if (data.status === "error") {
+					setloading(false);
 					seterr(data.message);
 				}
 				if (data.code === 1) {
 					setsuccess(data.message);
-
+					setloading(false);
 					globalDispatch({
 						type: "SET_USER",
 						payload: {
@@ -99,6 +113,7 @@ const EditProfile = () => {
 				}
 			})
 			.catch((err) => {
+				setloading(false);
 				console.log(err);
 			});
 	};
@@ -107,7 +122,7 @@ const EditProfile = () => {
 		<div className="flex flex-col items-center mt-16 p-8 mb-16 w-full md:w-1/2 mx-auto">
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
-			{console.log(profile)}
+			{loading ? <TopBarProgress /> : null}
 			<div className="flex flex-col items-center mb-3">
 				{profile.profile_picture !== "" ? (
 					<img
