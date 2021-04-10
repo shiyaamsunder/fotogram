@@ -27,10 +27,10 @@ const chatRouter = require("./routes/chat");
 const connectionRouter = require("./routes/connection");
 
 // route middlewares
-app.use("/user", userRouter);
-app.use("/feed", feedRouter);
-app.use("/chat", chatRouter);
-app.use("/connection", connectionRouter);
+app.use("/api/user", userRouter);
+app.use("/api/feed", feedRouter);
+app.use("/api/chat", chatRouter);
+app.use("/api/connection", connectionRouter);
 
 //error handler middleware
 app.use(handleErrors);
@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 // start the server
 app.listen(PORT, () => {
 	console.log(`server started in ${PORT} ...`);
