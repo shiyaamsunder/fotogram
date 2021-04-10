@@ -318,6 +318,7 @@ const Profile = () => {
 					id={currentFeed._id}
 					user={user}
 					currentUser_id={currentUser_id}
+					toggleModal={toggleModal}
 				/>
 			) : null}
 		</>

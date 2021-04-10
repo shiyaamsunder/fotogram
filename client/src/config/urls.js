@@ -4,6 +4,7 @@ module.exports = {
 	LOGIN: "/api/user/login/",
 	USER: "/api/user/me/",
 	USER_UPDATE: "/api/user/update/",
+	USERS_ALL: "/api/user/all",
 	HOME: "/api/user/home/",
 	PROFILE: "/api/user/profile/",
 	RANDOM: "/api/feed/random/",

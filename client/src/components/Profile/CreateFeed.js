@@ -71,7 +71,7 @@ const CreateFeed = (props) => {
 
 	const submitForm = () => {
 		setloading(true);
-		fetch("/feed/create", {
+		fetch("api/feed/create", {
 			method: "POST",
 			body: JSON.stringify(state),
 			headers: {
@@ -100,6 +100,7 @@ const CreateFeed = (props) => {
 				}
 			})
 			.catch((err) => {
+				setloading(false);
 				console.log(err);
 			});
 	};

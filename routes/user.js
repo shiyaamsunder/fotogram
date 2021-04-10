@@ -87,6 +87,16 @@ router.post("/login", async (req, res, next) => {
 	}
 });
 
+// fetch all users
+router.get("/all", verifyToken, async (req, res, next) => {
+	try {
+		let users = await userModel.find();
+		res.send(users);
+	} catch (err) {
+		next(err);
+	}
+});
+
 //user fetch
 router.get("/me/:id", verifyToken, async (req, res, next) => {
 	let id = req.params.id;

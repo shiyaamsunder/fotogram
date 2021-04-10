@@ -86,7 +86,7 @@ const Login = (props) => {
 					/>
 					<button
 						onClick={submitForm}
-						className="btn bg-purple-600 text-white mt-2 h-auto"
+						className="btn btn-primary btn-md mt-2 h-auto"
 						disabled={loading}
 					>
 						{loading ? <Ripple size={20} thickness={3} /> : "Login"}

@@ -96,7 +96,7 @@ const Register = () => {
 						onChange={(event) => handleChange(event)}
 					/>
 					<button
-						className="btn flex justify-center bg-purple-600 text-white mt-2 items-center"
+						className="btn btn-primary btn-md mt-2 items-center"
 						onClick={submitForm}
 						disabled={loading}
 					>

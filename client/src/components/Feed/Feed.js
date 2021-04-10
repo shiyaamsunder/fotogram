@@ -121,11 +121,11 @@ const Feed = ({
 					</Link>
 				</h3>
 			</div>
-			<div className="flex flex-col items-center mt-2 h-5/6 ">
+			<div className="flex flex-col items-center mt-2 ">
 				<img
 					src={picture}
 					alt=""
-					className={"object-contain"}
+					className={"object-cover w-full"}
 					onClick={toggleModal}
 				/>
 

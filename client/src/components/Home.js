@@ -44,7 +44,7 @@ const Home = (props) => {
 
 	return !isLoading ? (
 		<motion.div className="flex flex-col h-auto mt-14 mb-14 items-center justify-center">
-			<h1 className="text-3xl font-bold text-purple-500 my-5">Your Feed</h1>
+			<h1 className="text-3xl font-bold text-gray-600 my-5">Your Feed</h1>
 			{feeds?.map((feed, index) => (
 				<Feed
 					key={feed._id}

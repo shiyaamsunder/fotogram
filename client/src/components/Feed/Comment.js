@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 // TODO calculate timestamp
 const Comment = ({ comments }) => {
 	let { comment, timestamp } = comments;
@@ -13,9 +14,12 @@ const Comment = ({ comments }) => {
 				className="rounded-full object-cover w-8 h-8 mr-1"
 			/>
 			<div className="flex flex-col items-start ml-1">
-				<span className="font-semibold text-xs text-purple-700">
+				<Link
+					to={`/profile/${username}`}
+					className="font-semibold text-xs text-purple-700"
+				>
 					{username}
-				</span>
+				</Link>
 				<span className="font-semibold text-sm">{comment}</span>
 			</div>
 			{/* <span>{timestamp}</span> */}
