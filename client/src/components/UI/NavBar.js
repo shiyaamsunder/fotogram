@@ -26,7 +26,7 @@ const NavBar = () => {
 
 	useEffect(() => {
 		let mounted = true;
-		fetch(USER + `${id}`, {
+		fetch(USER + `${id}/`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 			.then((res) => res.json())
@@ -81,7 +81,7 @@ const NavBar = () => {
 				</NavLink>
 			</div>
 
-			<header className="flex items-center fixed bottom-0 md:top-0 w-full h-14 py-2 px-4 shadow-sm bg-gray-200">
+			<header className="flex items-center fixed bottom-0 bg-gray-200 md:top-0 w-full h-14 py-2 px-4 shadow-sm">
 				<div className="hidden md:flex flex-grow text-3xl font-sans text-purple-500 font-semibold">
 					Fotogram
 				</div>
