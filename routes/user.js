@@ -96,6 +96,7 @@ router.get("/me/:id", verifyToken, async (req, res, next) => {
 		let user = await userModel.findOne({ _id: id });
 		res.send(user);
 	} catch (err) {
+		console.log(err);
 		next(err);
 	}
 });
@@ -239,7 +240,12 @@ router.put("/update/:id", verifyToken, async (req, res, next) => {
 			const uploadResponse = await cloudinary.uploader.upload(fileStr, {
 				upload_preset: "profile_pictures",
 				public_id: id,
-				quality: 60,
+				quality: 50,
+				width: 500,
+				height: 500,
+				crop: "fill",
+				radius: "max",
+				gravity: "center",
 			});
 			profile.profile_picture = uploadResponse.secure_url;
 

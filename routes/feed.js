@@ -34,6 +34,10 @@ router.post("/create", verifyToken, async (req, res, next) => {
 				upload_preset: "feed_pictures",
 				public_id: new_name,
 				quality: 60,
+				width: 300,
+				height: 300,
+				crop: "fill",
+				gravity: "center",
 			});
 			feed.picture = uploadResponse.secure_url;
 			feedModel.updateOne({ _id: data._id }, { $set: feed }).then(() => {
@@ -41,6 +45,7 @@ router.post("/create", verifyToken, async (req, res, next) => {
 			});
 		});
 	} catch (err) {
+		console.log(err);
 		next(err);
 	}
 });
@@ -120,59 +125,68 @@ router.get("/likeusers/:feed_id", verifyToken, async (req, res) => {
 });
 
 router.get("/random", verifyToken, async (req, res) => {
-	let feeds = await feedModel.find().populate("user");
+	try {
+		let feeds = await feedModel.find().populate("user");
+		let public_feeds = feeds.filter((feed) => {
+			return feed.user.account_type === "public";
+		});
 
-	let public_feeds = feeds.filter((feed) => {
-		return feed.user.account_type === "public";
-	});
+		if (public_feeds.length <= 6) {
+			res.send({ feeds: public_feeds });
+			return;
+		}
 
-	let random_feeds = [];
-	for (let i = 1; i <= 3; i++) {
-		let random_index = Math.floor(Math.random() * public_feeds.length);
+		let random_feeds = [];
+		for (let i = 1; i <= 6; i++) {
+			let random_index = Math.floor(Math.random() * public_feeds.length);
 
-		let count = 0;
-		random_feeds.map((feed) => {
-			if (feed._id.equals(public_feeds[random_index]._id)) {
-				count++;
+			let count = 0;
+			random_feeds.map((feed) => {
+				if (feed._id.equals(public_feeds[random_index]._id)) {
+					count++;
+				}
+			});
+
+			if (count === 0) {
+				random_feeds.push(public_feeds[random_index]);
+			} else {
+				i--;
 			}
+		}
+
+		let feed_ids = random_feeds.map((feed) => {
+			return feed._id;
 		});
 
-		if (count === 0) {
-			random_feeds.push(public_feeds[random_index]);
-		} else {
-			i--;
-		}
-	}
-
-	let feed_ids = random_feeds.map((feed) => {
-		return feed._id;
-	});
-
-	let likeCount = await likeModel.aggregate([
-		{
-			$match: { feed: { $in: feed_ids } },
-		},
-		{
-			$group: {
-				_id: "$feed",
-				likes: { $push: "$$ROOT" },
+		let likeCount = await likeModel.aggregate([
+			{
+				$match: { feed: { $in: feed_ids } },
 			},
-		},
-	]);
+			{
+				$group: {
+					_id: "$feed",
+					likes: { $push: "$$ROOT" },
+				},
+			},
+		]);
 
-	let newfeeds = random_feeds.map((feed) => {
-		let likeRecords = likeCount.filter((like) => {
-			return like._id.equals(feed._id);
+		let newfeeds = random_feeds.map((feed) => {
+			let likeRecords = likeCount.filter((like) => {
+				return like._id.equals(feed._id);
+			});
+
+			if (likeRecords.length != 0) {
+				feed.likeCount = likeRecords[0].likes.length;
+			}
+
+			return feed;
 		});
 
-		if (likeRecords.length != 0) {
-			feed.likeCount = likeRecords[0].likes.length;
-		}
-
-		return feed;
-	});
-
-	res.send({ feeds: newfeeds });
+		res.send({ feeds: newfeeds });
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
 });
 
 // get a single feed
