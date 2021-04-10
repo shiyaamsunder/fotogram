@@ -100,9 +100,13 @@ const FeedModal = ({ id, user, currentUser_id }) => {
 	};
 	const initialAvatar = `https://ui-avatars.com/api/?name=${username}&uppercase="false"?background=random`;
 	return (
-		<div className=" w-full h-auto md:w-3/4 mx-auto md:h-3/4  rounded-lg bg-white fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-2 gap-4">
-			<div className="h-full w-full flex items-center justify-center pl-3 pt-3 pb-3 mx-auto">
-				<img src={currentFeed?.picture} className="w-full" alt="" />
+		<div className=" w-full h-3/4 md:w-3/4 mx-auto md:h-3/4 rounded-lg bg-white fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-2 gap-4">
+			<div className="w-full h-full flex items-center justify-center pl-3 pt-3 mx-auto overflow-hidden rounded-full">
+				<img
+					src={currentFeed ? currentFeed.picture : null}
+					className="object-cover w-3/4 h-3/4"
+					alt=""
+				/>
 			</div>
 
 			<div className="border-l pt-2 border-gray-200 flex flex-col">
