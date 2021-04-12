@@ -8,11 +8,12 @@ import Context from "../store/Context";
 import Loading from "./UI/Loading";
 const Home = (props) => {
 	const { globalState, globalDispatch } = useContext(Context);
-	const [feeds, setFeeds] = useState([]);
+	// const [feeds, setFeeds] = useState([]);
 
 	let token = localStorage.getItem("authToken");
 	let user_id = localStorage.getItem("id");
 	const [isLoading, setisloading] = useState(false);
+	const { feeds } = globalState;
 
 	// Loading bar config
 	TopBarProgress.config({
@@ -35,7 +36,7 @@ const Home = (props) => {
 				if (isSub) {
 					globalDispatch({ type: "SET_FEEDS", payload: { feeds: data } });
 
-					setFeeds(data);
+					// setFeeds(data);
 					setisloading(false);
 				}
 			});
@@ -44,7 +45,7 @@ const Home = (props) => {
 
 	return !isLoading ? (
 		<motion.div className="flex flex-col h-auto mt-14 mb-14 items-center justify-center">
-			<h1 className="text-3xl font-bold text-gray-600 my-5">Your Feed</h1>
+			<h1 className="text-3xl font-bold text-gray-600 my-5">Your Timeline</h1>
 			{feeds?.map((feed, index) => (
 				<Feed
 					key={feed._id}

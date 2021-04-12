@@ -121,6 +121,7 @@ router.get("/profile/:username", verifyToken, async (req, res, next) => {
 
 		let feeds = await feedModel
 			.find({ user: user._id })
+			.populate("user")
 			.sort({ timestamp: -1 });
 		let feed_ids = feeds.map((feed) => {
 			return feed._id;

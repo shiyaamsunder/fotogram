@@ -9,6 +9,7 @@ module.exports = {
 	PROFILE: "/api/user/profile/",
 	RANDOM: "/api/feed/random/",
 	CREATE_FEED: "/api/feed/create/",
+	DELETE_FEED: "/api/feed/delete",
 	LIKE: "/api/feed/like/",
 	FETCH_COMMENTS: "/api/feed/comments/",
 	COMMENT: "/api/feed/comment/",

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { BASE_URL, PROFILE, USER, FOLLOW, UNFOLLOW } from "../../config/urls";
 import { Ripple } from "react-css-spinners";
-import FeedModal from "../Feed/FeedModal";
+import FeedModal from "../Feed/FeedModal/FeedModal";
 import Backdrop from "../UI/Backdrop";
 import Loading from "../UI/Loading";
 import TopBarProgress from "react-topbar-progress-indicator";
@@ -16,11 +16,11 @@ const Profile = () => {
 	let token = localStorage.getItem("authToken");
 	const [followStatus, setFollowStatus] = useState("Follow");
 	const [followLoading, setFollowLoading] = useState(false);
-	const [profile, setprofile] = useState({
-		feeds: [],
-		followers: [],
-		influencers: [],
-	});
+	// const [profile, setprofile] = useState({
+	// 	feeds: [],
+	// 	followers: [],
+	// 	influencers: [],
+	// });
 	const [user, setuser] = useState({
 		username: "",
 		profile_picture: "",
@@ -28,7 +28,7 @@ const Profile = () => {
 		account_type: "",
 		bio: "",
 	});
-	const [currentUser, setCurrentUser] = useState({
+	const [loggedInUser, setloggedInUser] = useState({
 		username: "",
 		profile_picture: "",
 		id: null,
@@ -38,8 +38,9 @@ const Profile = () => {
 	const [isLoading, setisloading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentFeed, setCurrentFeed] = useState({});
-	let currentUser_id = localStorage.getItem("id");
+	let loggedInUser_id = localStorage.getItem("id");
 	const { globalState, globalDispatch } = useContext(Context);
+	const { profile } = globalState;
 
 	// Loading bar config
 	TopBarProgress.config({
@@ -60,6 +61,45 @@ const Profile = () => {
 	useEffect(() => {
 		setisloading(true);
 		window.scrollTo(0, 0);
+		fetchProfileData();
+		setisloading(false);
+	}, []);
+
+	useEffect(() => {
+		setisloading(true);
+		fetchProfileData();
+		setisloading(false);
+	}, [followStatus]);
+
+	useEffect(() => {
+		setisloading(true);
+		fetch(`${USER}${loggedInUser_id}` + "/", {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setloggedInUser({
+					username: data.username,
+					profile_picture: data.profile_picture,
+					id: data._id,
+					account_type: data.account_type,
+					bio: data.bio,
+				});
+				setisloading(false);
+			});
+	}, []);
+
+	const redirectToEditProfile = () => {
+		history.push("/edit");
+	};
+
+	const toggleModal = () => {
+		setIsOpen(!isOpen);
+	};
+
+	const fetchProfileData = () => {
 		fetch(PROFILE + params.username, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -87,11 +127,10 @@ const Profile = () => {
 
 				data.accepted_followers = accepted_followers;
 				data.requested_followers = requested_followers;
-				setprofile(data);
 
-				if (currentUser_id !== data.user._id) {
+				if (loggedInUser_id !== data.user._id) {
 					let checkInAcceptedFollowers = data.accepted_followers.find((ele) => {
-						return ele.status === 1 && ele.follower._id;
+						return ele.status === 1 && ele.follower._id === loggedInUser_id;
 					});
 
 					if (checkInAcceptedFollowers === undefined) {
@@ -100,6 +139,7 @@ const Profile = () => {
 								return ele.status === 0 && ele.follower._id;
 							}
 						);
+						console.log(checkInRequestedFollowers);
 						if (checkInRequestedFollowers !== undefined) {
 							setFollowStatus("Cancel request");
 						} else {
@@ -110,40 +150,11 @@ const Profile = () => {
 					}
 				}
 
-				setisloading(false);
+				globalDispatch({ type: "SET_PROFILE", payload: { profile: data } });
 			})
 			.catch((err) => {
 				console.log(err);
-				setisloading(false);
 			});
-	}, []);
-
-	useEffect(() => {
-		setisloading(true);
-		fetch(`${USER}${currentUser_id}` + "/", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setCurrentUser({
-					username: data.username,
-					profile_picture: data.profile_picture,
-					id: data._id,
-					account_type: data.account_type,
-					bio: data.bio,
-				});
-				setisloading(false);
-			});
-	}, []);
-
-	const redirectToEditProfile = () => {
-		history.push("/edit");
-	};
-
-	const toggleModal = () => {
-		setIsOpen(!isOpen);
 	};
 
 	const connectionAction = (influencer_id, user_id) => {
@@ -170,12 +181,12 @@ const Profile = () => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setFollowLoading(false);
-
 				if (data.message === "Request Sent") {
 					setFollowStatus("Cancel request");
+					setFollowLoading(false);
 				} else {
 					setFollowStatus("Unfollow");
+					setFollowLoading(false);
 				}
 			});
 	};
@@ -207,7 +218,9 @@ const Profile = () => {
 				initial={{ x: "400px" }}
 				animate={{ x: 0 }}
 				exit={{ x: "100vw" }}
-				className="w-full md:w-3/4 h-screen mt-14 mx-auto mb-16"
+				className={`w-full md:w-3/4 h-full mt-14 mx-auto mb-16 ${
+					isOpen ? "overflow-hidden" : ""
+				}`}
 			>
 				{followLoading ? <TopBarProgress /> : null}
 				<div className="w-full bg-gray-100 h-auto p-2 mx-auto rounded-b-md">
@@ -221,7 +234,6 @@ const Profile = () => {
 							}
 							alt=""
 						/>
-
 						<div className="flex w-full items-center justify-evenly">
 							<div className="text-center">
 								<h3>{profile.feeds.length}</h3>
@@ -247,7 +259,7 @@ const Profile = () => {
 						</div>
 					</div>
 				</div>
-				{location.pathname.split("/")[2] === currentUser.username ? (
+				{location.pathname.split("/")[2] === loggedInUser.username ? (
 					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
 						<button
 							className="btn btn-md btn-primary w-full mx-2"
@@ -271,7 +283,7 @@ const Profile = () => {
 									? "btn-secondary"
 									: "btn-primary"
 							} w-full mx-2`}
-							onClick={() => connectionAction(user.id, currentUser.id)}
+							onClick={() => connectionAction(user.id, loggedInUser.id)}
 						>
 							{followStatus}
 						</button>
@@ -285,7 +297,7 @@ const Profile = () => {
 					</div>
 				)}
 
-				{user.account_type === "private" && user.id !== currentUser_id ? (
+				{user.account_type === "private" && user.id !== loggedInUser_id ? (
 					<h1 className="font-bold text-xl text-center">
 						This account is private
 					</h1>
@@ -307,7 +319,9 @@ const Profile = () => {
 								);
 							})
 						) : (
-							<h1 className="text-center font-bold text-xl">No Posts</h1>
+							<h1 className="col-span-3 text-center font-bold text-xl mt-5">
+								No Posts
+							</h1>
 						)}
 					</div>
 				)}
@@ -317,7 +331,7 @@ const Profile = () => {
 				<FeedModal
 					id={currentFeed._id}
 					user={user}
-					currentUser_id={currentUser_id}
+					loggedInUser_id={loggedInUser_id}
 					toggleModal={toggleModal}
 				/>
 			) : null}

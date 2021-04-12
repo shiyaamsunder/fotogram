@@ -4,6 +4,11 @@ const initialState = {
 	feeds: [],
 	user: {},
 	randomFeeds: [],
+	profile: {
+		feeds: [],
+		influencers: [],
+		followers: [],
+	},
 };
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -24,6 +29,12 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				user: action.payload.user,
+			};
+
+		case "SET_PROFILE":
+			return {
+				...state,
+				profile: action.payload.profile,
 			};
 		default:
 			return state;

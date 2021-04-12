@@ -198,3 +198,22 @@ router.get("/:id", verifyToken, async (req, res, next) => {
 	res.send(feed);
 });
 module.exports = router;
+
+// delete a post
+router.get("/delete/:id/", verifyToken, async (req, res, next) => {
+	let id = req.params.id;
+
+	try {
+		if (!id) throw new BadRequest("Missing ID parameter");
+
+		await feedModel.deleteOne({ _id: id });
+
+		cloudinary.uploader.destroy(`feed_pictures/${id}`, (err, result) => {
+			console.log(err, result);
+		});
+
+		res.send({ message: "Feed deleted", code: 1 });
+	} catch {
+		next(err);
+	}
+});

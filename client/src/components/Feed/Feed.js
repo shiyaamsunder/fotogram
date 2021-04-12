@@ -6,6 +6,8 @@ import { BASE_URL, LIKE, FETCH_COMMENTS, COMMENT } from "../../config/urls";
 import Context from "../../store/Context";
 import Loading from "../UI/Loading";
 import Comment from "./Comment";
+import { HiDotsVertical } from "react-icons/hi";
+import FeedMenu from "./FeedMenu";
 
 const Feed = ({
 	feed,
@@ -25,6 +27,7 @@ const Feed = ({
 	const [comment, setcomment] = useState("");
 	const [isDisabled, setisdisabled] = useState(true);
 	const [isLoading, setisloading] = useState(false);
+	const [isFeedMenuOpen, setIsFeedMenuOpen] = useState(false);
 	const { feeds } = globalState;
 
 	const likePost = (feed_id, user_id) => {
@@ -109,17 +112,38 @@ const Feed = ({
 
 	return (
 		<div className="w-full rounded-md border border-gray-200 my-5 md:w-96 h-auto py-2 md:rounded-lg">
-			<div className="flex  items-center justify-start rounded-sm h-auto ml-2">
-				<img
-					src={!profile_picture ? initialAvatar : profile_picture}
-					alt="profile picture"
-					className="rounded-full object-cover w-10 h-10 mr-1"
-				/>
-				<h3 className="text-lg font-semibold h-full text-purple-600">
-					<Link className="h-full py-4 px-2" to={`/profile/${name}`}>
-						{name}
-					</Link>
-				</h3>
+			<div className="flex  items-center justify-between rounded-sm h-auto ml-2 relative">
+				<div className="flex items-center justify-start ">
+					<img
+						src={!profile_picture ? initialAvatar : profile_picture}
+						alt="profile picture"
+						className="rounded-full object-cover w-10 h-10 mr-1"
+					/>
+					<h3 className="text-lg font-semibold h-full text-purple-600">
+						<Link className="h-full py-4 px-2" to={`/profile/${name}`}>
+							{name}
+						</Link>
+					</h3>
+				</div>
+
+				<div
+					onClick={() => {
+						setIsFeedMenuOpen(!isFeedMenuOpen);
+					}}
+					className="w-6 h-6 rounded-full hover:bg-gray-300  cursor-pointer mr-2 flex items-center justify-center"
+				>
+					<HiDotsVertical color={"gray"} />
+				</div>
+
+				{isFeedMenuOpen ? (
+					<FeedMenu
+						items={[{ name: "Delete" }]}
+						toggle={() => {
+							setIsFeedMenuOpen(!isFeedMenuOpen);
+						}}
+						id={feed_id}
+					/>
+				) : null}
 			</div>
 			<div className="flex flex-col items-center mt-2 ">
 				<img

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
 import { RANDOM, USERS_ALL } from "../../config/urls";
 import Context from "../../store/Context";
-import FeedModal from "../Feed/FeedModal";
+import FeedModal from "../Feed/FeedModal/FeedModal";
 import Backdrop from "../UI/Backdrop";
 
 const Search = () => {
@@ -91,7 +91,6 @@ const Search = () => {
 				value={searchValue}
 				onChange={handleChange}
 			/>
-			{console.log(searchedUsers)}
 			<div className="w-1/2 bg-gray-200 rounded-lg">
 				{searchedUsers && searchedUsers.length === 0 && (
 					<h1 className="text-lg font-extrabold p-5 text-center">No Users</h1>
