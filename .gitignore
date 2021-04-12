@@ -5,7 +5,6 @@
 node_modules/
 /.pnp
 .pnp.js
-client/src/styles/tailwind.css
 
 feed_pictures/
 profile_pictures/
