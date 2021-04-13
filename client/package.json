@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "npm run build:style && craco start",
-    "build": "set REACT_APP_ENV=production npm run build:style && craco build",
+    "build": "npm run build:style && craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
     "build:style": "tailwind build src/index.css -o src/styles/tailwind.css"
