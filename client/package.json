@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "npm run build:style && craco start",
-    "build": "craco build",
+    "build": "npm run build:style && craco build",
     "postdeploy": "npm run build",
     "test": "craco test",
     "eject": "react-scripts eject",
