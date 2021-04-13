@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ripple } from "react-css-spinners";
 import { FcOldTimeCamera } from "react-icons/fc";
 import { Link, Redirect } from "react-router-dom";
@@ -16,6 +16,10 @@ const Register = () => {
 	const [error, seterr] = useState("");
 	const [success, setsuccess] = useState("");
 	const [loading, setloading] = useState(false);
+
+	useEffect(() => {
+		document.title = "Register - Fotogram";
+	}, []);
 
 	const handleChange = (event) => {
 		let val = event.target.value;

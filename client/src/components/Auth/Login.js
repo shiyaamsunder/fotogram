@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LOGIN, BASE_URL } from "../../config/urls";
 import { Ripple } from "react-css-spinners";
@@ -13,6 +13,10 @@ const Login = (props) => {
 
 	const [error, seterr] = useState("");
 	const [loading, setloading] = useState(false);
+
+	useEffect(() => {
+		document.title = "Login - Fotogram";
+	}, []);
 
 	const handleChange = (event) => {
 		let val = event.target.value;
