@@ -26,6 +26,7 @@ const Home = (props) => {
 	});
 
 	useEffect(() => {
+		document.title = "Fotogram";
 		setisloading(true);
 		let isSub = true;
 		fetch(`${HOME}${user_id}/`, {

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 // TODO calculate timestamp
 const Comment = ({ comments }) => {
 	let { comment, timestamp } = comments;
 	let { username, profile_picture } = comments.user;
+
+	timestamp = moment(timestamp).fromNow();
 
 	const initialAvatar = `https://ui-avatars.com/api/?name=${username}&uppercase="false"?background=random`;
 	return (
@@ -22,7 +25,9 @@ const Comment = ({ comments }) => {
 				</Link>
 				<span className="font-semibold text-sm">{comment}</span>
 			</div>
-			{/* <span>{timestamp}</span> */}
+			<span className="ml-auto text-xs font-medium text-gray-500">
+				{timestamp}
+			</span>
 		</div>
 	);
 };

@@ -29,10 +29,17 @@ router.post("/create", verifyToken, (req, res, next) => {
 // get chat convo
 router.get("/get_convo/:u1/:u2", verifyToken, async (req, res) => {
 	let { u1, u2 } = req.params;
-	let sender_data = await chatModel.find({ sender: u1, reciever: u2 });
-	let reciever_data = await chatModel.find({ sender: u2, reciever: u1 });
+	// let sender_data = await chatModel.find({ sender: u1, reciever: u2 });
+	// let reciever_data = await chatModel.find({ sender: u2, reciever: u1 });
 
-	res.send({ sender_data, reciever_data });
+	let chats = await chatModel.find({
+		$or: [
+			{ sender: u1, reciever: u2 },
+			{ sender: u2, reciever: u1 },
+		],
+	});
+
+	res.send(chats);
 });
 
 // delete

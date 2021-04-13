@@ -302,7 +302,7 @@ const Profile = () => {
 						This account is private
 					</h1>
 				) : (
-					<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-1 ">
+					<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-2">
 						{profile.feeds && profile.feeds.length > 0 ? (
 							profile.feeds.map((feed) => {
 								return (
@@ -310,7 +310,7 @@ const Profile = () => {
 										src={feed.picture}
 										key={feed._id}
 										alt=""
-										className=" w-32 h-32 md:w-full md:h-48 object-cover cursor-pointer"
+										className=" w-32 h-32 md:w-full md:h-48 object-cover cursor-pointer rounded-md"
 										onClick={() => {
 											toggleModal();
 											setCurrentFeed(feed);
@@ -326,7 +326,9 @@ const Profile = () => {
 					</div>
 				)}
 			</motion.div>
-			{isOpen ? <Backdrop toggle={toggleModal} /> : null}
+
+			{/* Feature for another day */}
+			{/* {isOpen ? <Backdrop toggle={toggleModal} /> : null}
 			{isOpen ? (
 				<FeedModal
 					id={currentFeed._id}
@@ -334,7 +336,7 @@ const Profile = () => {
 					loggedInUser_id={loggedInUser_id}
 					toggleModal={toggleModal}
 				/>
-			) : null}
+			) : null} */}
 		</>
 	) : (
 		<div className="mt-20">

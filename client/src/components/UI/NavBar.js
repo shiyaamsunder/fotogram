@@ -50,12 +50,12 @@ const NavBar = () => {
 				{location.pathname === "/create" ||
 				location.pathname === "/chat" ||
 				location.pathname === "/edit" ? (
-					<NavLink to="/">
+					<button onClick={() => history.goBack()}>
 						<HiOutlineArrowLeft
 							size={"1.5em"}
 							className="text-gray-600 hover:text-purple-500"
 						/>
-					</NavLink>
+					</button>
 				) : (
 					<NavLink to="/create">
 						<HiOutlinePlus
@@ -97,6 +97,10 @@ const NavBar = () => {
 
 						<NavLink to="/search">
 							<HiOutlineSearch size={"1.4em"} />
+						</NavLink>
+
+						<NavLink to="/chat" className="hidden md:block">
+							<HiOutlineChat size={"1.5em"} />
 						</NavLink>
 
 						<NavLink to={`/profile/${user.username}`}>

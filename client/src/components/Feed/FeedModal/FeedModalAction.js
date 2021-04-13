@@ -1,5 +1,6 @@
 import React from "react";
 import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
+import CommentAction from "./CommentAction";
 
 const FeedModalAction = ({ feed }) => {
 	const { already_liked, likeCount, user, caption } = feed;
@@ -40,9 +41,7 @@ const FeedModalAction = ({ feed }) => {
 				<p className="text-sm ml-1">{caption}</p>
 			</div>
 
-			<div className="p-2">
-				<input type="text" />
-			</div>
+			<CommentAction />
 		</div>
 	);
 };

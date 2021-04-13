@@ -8,6 +8,7 @@ import Loading from "../UI/Loading";
 import Comment from "./Comment";
 import { HiDotsVertical } from "react-icons/hi";
 import FeedMenu from "./FeedMenu";
+import moment from "moment";
 
 const Feed = ({
 	feed,
@@ -19,6 +20,8 @@ const Feed = ({
 }) => {
 	const { caption, picture, likeCount, already_liked } = feed;
 	const feed_id = feed._id;
+
+	let timestamp = moment(feed.timestamp).fromNow();
 
 	const { globalState, globalDispatch } = useContext(Context);
 
@@ -111,7 +114,7 @@ const Feed = ({
 	const initialAvatar = `https://ui-avatars.com/api/?name=${name}&uppercase="false"?background=random`;
 
 	return (
-		<div className="w-full rounded-md border border-gray-200 my-5 md:w-96 h-auto py-2 md:rounded-lg">
+		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg">
 			<div className="flex  items-center justify-between rounded-sm h-auto ml-2 relative">
 				<div className="flex items-center justify-start ">
 					<img
@@ -145,7 +148,7 @@ const Feed = ({
 					/>
 				) : null}
 			</div>
-			<div className="flex flex-col items-center mt-2 ">
+			<div className="flex flex-col items-center w-full mt-2 ">
 				<img
 					src={picture}
 					alt=""
@@ -191,13 +194,15 @@ const Feed = ({
 							: `${likeCount} like`}
 					</span>
 
-					<p className="ml-1">
-						{caption ? (
+					<div className="ml-1 flex flex-col">
+						<div className="flex">
 							<span className="font-bold text-md mr-1">{name}</span>
-						) : null}
-
-						{caption}
-					</p>
+							<p>{caption}</p>
+						</div>
+						<span className="text-sm font-light italic text-gray-400">
+							{timestamp}
+						</span>
+					</div>
 				</div>
 
 				<div className="flex flex-col items-center justify-center w-full mx-2 p-2">

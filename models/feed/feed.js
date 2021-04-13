@@ -8,7 +8,7 @@ const feedSchema = new mongoose.Schema({
 	location: String,
 	tags: [String],
 	user: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
-	timestamp: { type: Date, default: Date.now() },
+	timestamp: { type: Date, default: Date.now },
 	likeCount: {type: Number, default: 0},
 	already_liked: {type: Boolean, default: false}
 });

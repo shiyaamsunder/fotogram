@@ -15,6 +15,7 @@ import { AnimatePresence } from "framer-motion";
 import EditProfile from "./components/Profile/EditProfile";
 import GlobalStateProvider from "./store/GlobalStateProvider";
 import Search from "./components/Search/Search";
+import ChatHome from "./components/Chat/ChatHome";
 
 function App() {
 	let location = useLocation();
@@ -35,6 +36,7 @@ function App() {
 							<Route path="/create" exact component={CreateFeed} />
 							<Route path="/edit" exact component={EditProfile} />
 							<Route path="/search" exact component={Search} />
+							<Route path="/chat" exact component={ChatHome} />
 						</ProtectedRoute>
 					</Switch>
 				</GlobalStateProvider>

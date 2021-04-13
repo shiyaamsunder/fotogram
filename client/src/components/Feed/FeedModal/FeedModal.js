@@ -108,8 +108,22 @@ const FeedModal = ({ id, user, currentUser_id, toggleModal }) => {
 	};
 
 	return (
-		<div className="bg-white absolute top-40 left-1/2 transform -translate-x-1/2 w-3/4 max-h-96 rounded-md flex">
-			<img src={currentFeed.picture} alt="" className="w-1/2 rounded-md m-3" />
+		<div className="bg-white absolute top-40 left-1/2 transform -translate-x-1/2 w-full md:w-3/4 md:max-h-96 rounded-md flex flex-col md:flex-row">
+			<div className="flex md:hidden">
+				<FeedModalHeader
+					image={user.profile_picture}
+					username={user.username}
+					feed_id={currentFeed._id}
+				/>
+			</div>
+			<div className="w-full md:w-1/2 flex items-center justify-center">
+				<img
+					src={currentFeed.picture}
+					alt=""
+					className=" w-3/4 object-fit rounded-md m-3"
+				/>
+			</div>
+
 			<RightPane user={user} comments={comments} feed={currentFeed} />
 		</div>
 	);
