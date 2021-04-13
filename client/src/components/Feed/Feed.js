@@ -18,7 +18,7 @@ const Feed = ({
 	profile_picture,
 	toggleModal,
 }) => {
-	const { caption, picture, likeCount, already_liked } = feed;
+	const { caption, picture, likeCount, already_liked, user } = feed;
 	const feed_id = feed._id;
 
 	let timestamp = moment(feed.timestamp).fromNow();
@@ -32,6 +32,11 @@ const Feed = ({
 	const [isLoading, setisloading] = useState(false);
 	const [isFeedMenuOpen, setIsFeedMenuOpen] = useState(false);
 	const { feeds } = globalState;
+
+	let feed_menu_items = [{ name: "Share" }, { name: "Delete" }];
+	if (user._id !== current_user_id) {
+		feed_menu_items.pop();
+	}
 
 	const likePost = (feed_id, user_id) => {
 		const new_feeds = feeds.filter((feed) => {
@@ -140,11 +145,12 @@ const Feed = ({
 
 				{isFeedMenuOpen ? (
 					<FeedMenu
-						items={[{ name: "Delete" }]}
+						items={feed_menu_items}
 						toggle={() => {
 							setIsFeedMenuOpen(!isFeedMenuOpen);
 						}}
-						id={feed_id}
+						feed_id={feed_id}
+						user_id={user._id}
 					/>
 				) : null}
 			</div>

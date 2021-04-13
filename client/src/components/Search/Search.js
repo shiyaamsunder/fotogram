@@ -142,7 +142,7 @@ const Search = () => {
 					})}
 			</div>
 
-			{isOpen ? <Backdrop toggle={toggleModal} /> : null}
+			{/* {isOpen ? <Backdrop toggle={toggleModal} /> : null}
 			{isOpen ? (
 				<FeedModal
 					id={currentFeed._id}
@@ -150,7 +150,7 @@ const Search = () => {
 					currentUser_id={user_id}
 					toggleModal={toggleModal}
 				/>
-			) : null}
+			) : null} */}
 		</div>
 	);
 };
