@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 require("dotenv").config();
 module.exports = {
 	purge: {
-		enabled: process.env.REACT_APP_ENV === "production",
+		enabled: true,
 		content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
 	},
 	darkMode: false, // or 'media' or 'class'
