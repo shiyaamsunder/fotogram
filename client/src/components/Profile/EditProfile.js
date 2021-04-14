@@ -23,9 +23,7 @@ const EditProfile = () => {
 		bio: "",
 		profile_picture: "",
 		account_type: "",
-		extension: "",
 	});
-	const history = useHistory();
 	const [error, seterr] = useState("");
 	const [success, setsuccess] = useState("");
 	const [loading, setloading] = useState(false);
@@ -195,7 +193,7 @@ const EditProfile = () => {
 				</div>
 			</div>
 
-			<div className="flex flex-col mb-4 w-full">
+			{/* <div className="flex flex-col mb-4 w-full">
 				<label htmlFor="account_type" className="text-sm text-gray-500 mb-1">
 					Account Privacy
 				</label>
@@ -226,7 +224,7 @@ const EditProfile = () => {
 						<span className="text-sm ml-1">Public</span>
 					</div>
 				</div>
-			</div>
+			</div> */}
 			<button
 				onClick={submitForm}
 				className="btn btn-primary btn-md  mx-2 mt-6"

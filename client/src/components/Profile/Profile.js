@@ -16,6 +16,7 @@ const Profile = () => {
 	let token = localStorage.getItem("authToken");
 	const [followStatus, setFollowStatus] = useState("Follow");
 	const [followLoading, setFollowLoading] = useState(false);
+	const [isFollowing, setIsFollowing] = useState(false);
 	// const [profile, setprofile] = useState({
 	// 	feeds: [],
 	// 	followers: [],
@@ -142,6 +143,7 @@ const Profile = () => {
 						console.log(checkInRequestedFollowers);
 						if (checkInRequestedFollowers !== undefined) {
 							setFollowStatus("Cancel request");
+							setIsFollowing(true);
 						} else {
 							setFollowStatus("Follow");
 						}
@@ -296,8 +298,9 @@ const Profile = () => {
 						</button>
 					</div>
 				)}
-
-				{user.account_type === "private" && user.id !== loggedInUser_id ? (
+				{user.account_type === "private" &&
+				user.id !== loggedInUser_id &&
+				isFollowing ? (
 					<h1 className="font-bold text-xl text-center">
 						This account is private
 					</h1>
