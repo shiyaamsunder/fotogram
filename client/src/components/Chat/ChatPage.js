@@ -24,7 +24,7 @@ const ChatPage = ({ location }) => {
 		const newSocket = io(
 			`${
 				process.env.REACT_APP_ENV === "production"
-					? "https://blooming-garden-12714.herokuapp.com/"
+					? "https://blooming-garden-12714.herokuapp.com"
 					: "http://localhost:8000"
 			}`,
 			{
