@@ -20,17 +20,10 @@ const ChatPage = ({ location }) => {
 			.then((data) => {
 				setChats(data);
 			});
-
-		const newSocket = io(
-			`${
-				process.env.REACT_APP_ENV === "production"
-					? "https://blooming-garden-12714.herokuapp.com"
-					: "http://localhost:8000"
-			}`,
-			{
-				query: { id: user1 },
-			}
-		);
+		console.log(document.location);
+		const newSocket = io(document.location.origin, {
+			query: { id: user1 },
+		});
 		newSocket.on("recieve", (chat) => {
 			setChats((prev) => [...prev, chat]);
 		});
