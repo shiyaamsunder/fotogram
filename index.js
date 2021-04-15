@@ -11,7 +11,7 @@ const io = require("socket.io")(server, {
 	cors: {
 		origin:
 			process.env.NODE_ENV === "production"
-				? "http://localhost:8000"
+				? `http://localhost:${process.env.PORT}`
 				: "http://localhost:3000",
 	},
 });
