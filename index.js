@@ -9,7 +9,10 @@ const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "http://localhost:3000",
+		origin:
+			process.env.NODE_ENV === "production"
+				? "http://localhost:8000/"
+				: "http://localhost:3000",
 	},
 });
 require("dotenv").config({ path: "./config.env" });
