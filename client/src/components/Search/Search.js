@@ -74,7 +74,10 @@ const Search = () => {
 
 		if (val.length > 0) {
 			let filteredUsers = users.filter((user) => {
-				return user.username.toLowerCase().includes(val.toLowerCase());
+				return (
+					user.username.toLowerCase().includes(val.toLowerCase()) ||
+					user.name.toLowerCase().includes(val.toLowerCase())
+				);
 			});
 			setSearchedUsers(filteredUsers);
 		} else {
@@ -87,8 +90,9 @@ const Search = () => {
 			{loading ? <TopBarProgress /> : null}
 			<input
 				type="text"
-				className="input"
+				className="input border-2 border-purple-500"
 				value={searchValue}
+				placeholder="Search for users"
 				onChange={handleChange}
 			/>
 			<div className="w-1/2 bg-gray-200 rounded-lg">

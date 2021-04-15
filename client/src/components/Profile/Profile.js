@@ -290,12 +290,15 @@ const Profile = () => {
 							{followStatus}
 						</button>
 
-						<button
-							// onClick={handleLogout}
-							className="btn btn-md btn-primary w-full mx-2"
+						<Link
+							to={{
+								pathname: `/chat/${user.username}`,
+								state: { user2: user.id },
+							}}
+							className="btn btn-md btn-primary w-full mx-2 flex items-center justify-center"
 						>
 							Message
-						</button>
+						</Link>
 					</div>
 				)}
 				{user.account_type === "private" &&

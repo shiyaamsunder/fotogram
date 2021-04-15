@@ -119,8 +119,8 @@ const Feed = ({
 	const initialAvatar = `https://ui-avatars.com/api/?name=${name}&uppercase="false"?background=random`;
 
 	return (
-		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg">
-			<div className="flex  items-center justify-between rounded-sm h-auto ml-2 relative">
+		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg relative">
+			<div className="flex  items-center justify-between rounded-sm h-auto ml-2  ">
 				<div className="flex items-center justify-start ">
 					<img
 						src={!profile_picture ? initialAvatar : profile_picture}
@@ -144,14 +144,16 @@ const Feed = ({
 				</div>
 
 				{isFeedMenuOpen ? (
-					<FeedMenu
-						items={feed_menu_items}
-						toggle={() => {
-							setIsFeedMenuOpen(!isFeedMenuOpen);
-						}}
-						feed_id={feed_id}
-						user_id={user._id}
-					/>
+					<div className="absolute top-9 right-0">
+						<FeedMenu
+							items={feed_menu_items}
+							toggle={() => {
+								setIsFeedMenuOpen(!isFeedMenuOpen);
+							}}
+							feed_id={feed_id}
+							user_id={user._id}
+						/>
+					</div>
 				) : null}
 			</div>
 			<div className="flex flex-col items-center w-full mt-2 ">
@@ -235,6 +237,7 @@ const Feed = ({
 									className="btn btn-primary btn-sm text-sm p-1 rounded-md "
 									disabled={isDisabled}
 									onClick={() => postComment(feed_id, current_user_id)}
+									tabIndex="-1"
 								>
 									Post
 								</button>

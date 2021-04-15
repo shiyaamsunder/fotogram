@@ -4,6 +4,14 @@ const cors = require("cors");
 const handleErrors = require("./middleware/handleError");
 const mongoose = require("mongoose");
 const path = require("path");
+const http = require("http");
+const server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+	cors: {
+		origin: "http://localhost:3000",
+	},
+});
 require("dotenv").config({ path: "./config.env" });
 
 //mongodb connection
@@ -25,6 +33,7 @@ const userRouter = require("./routes/user");
 const feedRouter = require("./routes/feed");
 const chatRouter = require("./routes/chat");
 const connectionRouter = require("./routes/connection");
+const chatModel = require("./models/chat/chat");
 
 // route middlewares
 app.use("/api/user", userRouter);
@@ -53,8 +62,20 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
+// socket code
+io.on("connection", (socket) => {
+	const id = socket.handshake.query.id;
+	socket.join(id);
+	socket.on("send", (chat) => {
+		let chatObj = new chatModel(chat);
+		chatObj.save().then(() => {});
+
+		socket.broadcast.to(chat.reciever).emit("recieve", chat);
+	});
+});
+
 const PORT = process.env.PORT || 8000;
 // start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`server started in ${PORT} ...`);
 });

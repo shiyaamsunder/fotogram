@@ -15,4 +15,6 @@ module.exports = {
 	COMMENT: "/api/feed/comment/",
 	FOLLOW: "/api/connection/create/",
 	UNFOLLOW: "/api/connection/unfollow/",
+	CONVOS: "/api/chat/convos/",
+	GET_CONVO: "/api/chat/get_convo/",
 };

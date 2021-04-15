@@ -2,6 +2,7 @@ const express = require("express");
 const verifyToken = require("../auth/verify-token");
 
 const chatModel = require("../models/chat/chat");
+const userModel = require("../models/user/user");
 
 const { BadRequest } = require("../utils/errors");
 
@@ -42,6 +43,28 @@ router.get("/get_convo/:u1/:u2", verifyToken, async (req, res) => {
 	res.send(chats);
 });
 
+router.get("/convos/:user_id", verifyToken, async (req, res) => {
+	let user = req.params.user_id;
+
+	let recievers = await chatModel.distinct("reciever", { sender: user });
+	let senders = await chatModel.distinct("sender", { reciever: user });
+
+	let combinedPersons = recievers.concat(senders);
+	let user_ids = [];
+
+	for (let i = 0; i < combinedPersons.length; i++) {
+		let p = user_ids.find((person) => {
+			return person.toString() === combinedPersons[i].toString();
+		});
+		if (p == null) {
+			user_ids.push(combinedPersons[i]);
+		}
+	}
+
+	let users = await userModel.find({ _id: user_ids });
+
+	res.send(users);
+});
 // delete
 router.delete("/delete/:id", verifyToken, (req, res) => {
 	let { id } = req.params;

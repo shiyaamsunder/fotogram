@@ -9,6 +9,7 @@ const initialState = {
 		influencers: [],
 		followers: [],
 	},
+	user2: "",
 };
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -29,6 +30,12 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				user: action.payload.user,
+			};
+
+		case "SET_USER2":
+			return {
+				...state,
+				user2: action.payload.user2,
 			};
 
 		case "SET_PROFILE":

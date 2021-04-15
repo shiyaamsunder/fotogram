@@ -15,7 +15,7 @@ import { FcOldTimeCamera } from "react-icons/fc";
 import { BASE_URL, USER } from "../../config/urls";
 import Context from "../../store/Context";
 
-const NavBar = () => {
+const NavBar = (props) => {
 	const history = useHistory();
 	const location = useLocation();
 	const [username, setusername] = useState("");
@@ -45,10 +45,10 @@ const NavBar = () => {
 	return (
 		<>
 			<div
-				className={`flex fixed w-full top-0 items-center py-2 px-4 justify-between md:hidden h-14 border-b border-gray-200 bg-white`}
+				className={`flex fixed w-full top-0 items-center py-2 px-4 justify-between md:hidden h-14 border-b border-gray-200 bg-white z-10`}
 			>
 				{location.pathname === "/create" ||
-				location.pathname === "/chat" ||
+				location.pathname.includes("chat") ||
 				location.pathname === "/edit" ? (
 					<button onClick={() => history.goBack()}>
 						<HiOutlineArrowLeft
@@ -64,16 +64,19 @@ const NavBar = () => {
 						/>
 					</NavLink>
 				)}
-
-				<h1 className={`font-semibold text-purple-700 text-2xl`}>
-					{location.pathname === "/chat" ? "Messages" : "FotoGram"}
+				<h1 className={`font-semibold text-purple-700 text-xl`}>
+					{location.pathname.includes("/chat/")
+						? `@${location.pathname.split("/")[2]}`
+						: location.pathname === "/chat"
+						? "Messages"
+						: "Fotogram"}
 				</h1>
-
 				<NavLink to="/chat">
 					<HiOutlineChat
 						size={"1.5em"}
 						className={`text-gray-600 hover:text-purple-500 ${
-							location.pathname === "/edit" || location.pathname === "/chat"
+							location.pathname === "/edit" ||
+							location.pathname.includes("chat")
 								? "hidden"
 								: "block"
 						}  `}
@@ -81,7 +84,7 @@ const NavBar = () => {
 				</NavLink>
 			</div>
 
-			<header className="flex items-center fixed bottom-0 bg-gray-200 md:top-0 w-full h-14 py-2 px-4 shadow-sm">
+			<header className="flex items-center fixed bottom-0 bg-gray-200 md:top-0 w-full h-14 py-2 px-4 shadow-sm z-10">
 				<div className="hidden md:flex flex-grow text-3xl font-sans text-purple-500 font-semibold">
 					Fotogram
 				</div>

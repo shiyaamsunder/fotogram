@@ -35,7 +35,7 @@ const FeedMenu = ({ items, toggle, feed_id, user_id }) => {
 			});
 	};
 	return (
-		<div className="w-60 h-auto bg-white border border-gray-200 rounded-md absolute top-9 right-3">
+		<div className="w-60 h-auto bg-white border border-gray-200 rounded-md ">
 			{items.map((item) => {
 				return (
 					<p

@@ -34,7 +34,7 @@
 }
 
 .input{
-  @apply border rounded-md p-2 leading-4 my-2;
+  @apply rounded-md p-2 leading-4 my-2;
 }
 
 

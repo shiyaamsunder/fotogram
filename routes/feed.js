@@ -207,6 +207,8 @@ router.get("/delete/:id/", verifyToken, async (req, res, next) => {
 		if (!id) throw new BadRequest("Missing ID parameter");
 
 		await feedModel.deleteOne({ _id: id });
+		await commentModel.deleteMany({ feed: id });
+		await likeModel.deleteMany({ feed: id });
 
 		cloudinary.uploader.destroy(`feed_pictures/${id}`, (err, result) => {
 			console.log(err, result);
