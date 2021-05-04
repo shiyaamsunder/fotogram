@@ -1,39 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiEdit2 } from "react-icons/fi";
-import { HiOutlinePhotograph } from "react-icons/hi";
-import { BASE_URL, USER, USER_UPDATE } from "../../config/urls";
-import Error from "../UI/Error";
-import Success from "../UI/Success";
-import Context from "../../store/Context";
-import TopBarProgress from "react-topbar-progress-indicator";
+import React, { useContext, useEffect, useState } from 'react';
+import { USER, USER_UPDATE } from '../../config/urls';
+import Error from '../UI/Error';
+import Success from '../UI/Success';
+import Context from '../../store/Context';
+import Form from '../Form';
+import TopBarProgress from 'react-topbar-progress-indicator';
 
 const EditProfile = () => {
+	// LoadingBar config
 	TopBarProgress.config({
 		barColors: {
-			0: "#8b5cf6",
-			0.5: "#7c3aed",
-			"1.0": "#a78bfa",
+			0: '#8b5cf6',
+			0.5: '#7c3aed',
+			'1.0': '#a78bfa',
 		},
 		shadowBlur: 5,
 	});
+
 	const [profile, setprofile] = useState({
-		name: "",
-		username: "",
-		bio: "",
-		profile_picture: "",
-		account_type: "",
+		username: '',
+		bio: '',
+		profile_picture: '',
+		account_type: '',
 	});
-	const [error, seterr] = useState("");
-	const [success, setsuccess] = useState("");
+	const [error, seterr] = useState('');
+	const [success, setsuccess] = useState('');
 	const [loading, setloading] = useState(false);
 
-	const { globalState, globalDispatch } = useContext(Context);
+	const { globalDispatch } = useContext(Context);
 	const [preview, setPreview] = useState();
 
-	let currentUser_id = localStorage.getItem("id");
-	let token = localStorage.getItem("authToken");
+	let currentUser_id = localStorage.getItem('id');
+	let token = localStorage.getItem('authToken');
 
+	// fetching the profile data on load
 	useEffect(() => {
 		setloading(true);
 		fetch(USER + currentUser_id, {
@@ -50,14 +50,15 @@ const EditProfile = () => {
 					profile_picture: data.profile_picture,
 					account_type: data.account_type,
 				});
-				globalDispatch({ type: "SET_USER", payload: { user: data } });
+				globalDispatch({ type: 'SET_USER', payload: { user: data } });
 				setloading(false);
 			});
 	}, []);
 
+	// dealing with input changes
 	const handleChange = (event) => {
 		let val = event.target.value;
-		if (event.target.name === "picture") {
+		if (event.target.name === 'picture') {
 			const file = event.target.files[0];
 			previewFile(file);
 		} else {
@@ -68,6 +69,7 @@ const EditProfile = () => {
 		}
 	};
 
+	// helper function to preview photo
 	const previewFile = (file) => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
@@ -80,22 +82,22 @@ const EditProfile = () => {
 		};
 	};
 
-	const submitForm = () => {
+	const submitForm = (event) => {
+		event.preventDefault();
 		setloading(true);
 		fetch(USER_UPDATE + currentUser_id, {
-			method: "PUT",
+			method: 'PUT',
 			body: JSON.stringify(profile),
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				'Content-Type': 'application/json',
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
 				seterr(null);
 				setsuccess(null);
-				if (data.status === "error") {
+				if (data.status === 'error') {
 					setloading(false);
 					seterr(data.message);
 				}
@@ -103,7 +105,7 @@ const EditProfile = () => {
 					setsuccess(data.message);
 					setloading(false);
 					globalDispatch({
-						type: "SET_USER",
+						type: 'SET_USER',
 						payload: {
 							user: profile,
 						},
@@ -122,10 +124,10 @@ const EditProfile = () => {
 			{success ? <Success message={success} /> : null}
 			{loading ? <TopBarProgress /> : null}
 			<div className="flex flex-col items-center mb-3">
-				{profile.profile_picture !== "" ? (
+				{profile.profile_picture !== '' ? (
 					<img
 						src={!preview ? profile.profile_picture : preview}
-						alt="profile picture"
+						alt="profile"
 						className="rounded-full object-cover w-28 h-28 mb-2"
 					/>
 				) : (
@@ -134,103 +136,45 @@ const EditProfile = () => {
 					</p>
 				)}
 
-				<div className="btn tracking-wide h-auto p-2 border text-gray-500">
-					<label
-						className="flex cursor-pointer items-center
-                        justify-between"
-					>
-						<span className="">Change Profile Picture</span>
-						<input
-							type="file"
-							className="hidden"
-							placeholder="Choose a picture"
-							name="picture"
-							accept="image/jpeg"
-							onChange={(event) => handleChange(event)}
-						/>
-						<HiOutlinePhotograph size={"1.5rem"} />
-					</label>
-				</div>
+				<Form.PicUpload name="picture" onChange={handleChange}>
+					Change Profile Picture
+				</Form.PicUpload>
 			</div>
 
-			<div className="w-full">
-				<div className="flex flex-col mb-4">
-					<label htmlFor="username" className="text-sm text-gray-500 mb-1">
-						Username
-					</label>
-					<input
-						type="text"
-						defaultValue={profile.username}
-						className="input"
-						onChange={(event) => handleChange(event)}
-						name="username"
-					/>
-				</div>
-				<div className="flex flex-col mb-4">
-					<label htmlFor="name" className="text-sm text-gray-500 mb-1">
-						Name
-					</label>
-					<input
-						type="text"
-						defaultValue={profile.name}
-						className="input"
-						onChange={(event) => handleChange(event)}
-						name="name"
-					/>
-				</div>
-				<div className="flex flex-col mb-4">
-					<label htmlFor="bio" className="text-sm text-gray-500 mb-1">
-						Bio
-					</label>
-					<input
-						type="text"
-						defaultValue={profile?.bio}
-						className="input"
-						maxLength={50}
-						name="bio"
-						onChange={(event) => handleChange(event)}
-					/>
-				</div>
-			</div>
-
-			{/* <div className="flex flex-col mb-4 w-full">
-				<label htmlFor="account_type" className="text-sm text-gray-500 mb-1">
-					Account Privacy
-				</label>
-				<div className="flex justify-start items-center">
-					<div className="mr-2">
-						<input
-							type="radio"
-							// defaultValue={profile.name}
-							value="private"
-							checked={profile.account_type === "private"}
-							className="input mr-1"
-							onChange={(event) => handleChange(event)}
-							name="account_type"
+			<Form>
+				<Form.Base onSubmit={submitForm} method="POST">
+					<Form.Group>
+						<Form.Label>Username</Form.Label>
+						<Form.Input
+							type="text"
+							placeholder="Username"
+							defaultValue={profile.username}
+							onChange={handleChange}
+							name="username"
+							size="lg"
 						/>
-						<span className="text-sm ml-1">Private</span>
-					</div>
-
-					<div className="ml-2">
-						<input
-							type="radio"
-							// defaultValue={profile.name}
-							value="public"
-							checked={profile.account_type === "public"}
-							className="input mr-1"
-							onChange={(event) => handleChange(event)}
-							name="account_type"
+						<Form.Label>Name</Form.Label>
+						<Form.Input
+							type="text"
+							placeholder="Name"
+							defaultValue={profile.name}
+							name="name"
+							onChange={handleChange}
+							size="lg"
 						/>
-						<span className="text-sm ml-1">Public</span>
-					</div>
-				</div>
-			</div> */}
-			<button
-				onClick={submitForm}
-				className="btn btn-primary btn-md  mx-2 mt-6"
-			>
-				Save Changes
-			</button>
+						<Form.Label>Bio</Form.Label>
+						<Form.Input
+							type="text"
+							placeholder="bio"
+							defaultValue={profile.bio}
+							onChange={handleChange}
+							name="bio"
+							size="lg"
+						/>
+					</Form.Group>
+					<Form.Submit type="submit">Save Changes</Form.Submit>
+				</Form.Base>
+			</Form>
 		</div>
 	);
 };
