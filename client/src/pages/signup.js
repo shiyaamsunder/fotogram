@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { LOGIN } from '../../config/urls';
 import { FcOldTimeCamera } from 'react-icons/fc';
-import Error from '../UI/Error';
-import Form from '../Form';
+import { REGISTER } from '../config/urls';
+import Form from '../components/Form';
+import Error from '../components/UI/Error';
+import Success from '../components/UI/Success';
 
-const Login = (props) => {
+export default function SignUp() {
 	const [state, setstate] = useState({
+		name: '',
+		email: '',
 		username: '',
 		password: '',
 	});
 	const [error, seterr] = useState('');
+	const [success, setsuccess] = useState('');
 	const [loading, setloading] = useState(false);
 
 	useEffect(() => {
-		document.title = 'Login - Fotogram';
+		document.title = 'Register - Fotogram';
 	}, []);
 
 	const handleChange = (event) => {
@@ -27,44 +31,56 @@ const Login = (props) => {
 	const submitForm = (event) => {
 		event.preventDefault();
 		setloading(true);
-		fetch(LOGIN, {
+		fetch(REGISTER, {
 			method: 'POST',
 			body: JSON.stringify(state),
 			headers: { 'Content-Type': 'application/json' },
 		})
-			.then((res) => res.json())
+			.then((res) => {
+				return res.json();
+			})
 			.then((data) => {
-				setstate({ username: '', password: '' });
-				seterr('');
+				console.log(data);
 
 				if (data.status === 'error') {
 					seterr(data.message);
-					setloading(false);
 				} else if (data.code === 1) {
-					setloading(false);
-					localStorage.setItem('authToken', data.token);
-					localStorage.setItem('id', data.user._id);
-					props.history.replace('/');
+					seterr('');
+					setsuccess(data.message);
+					setstate({ name: '', email: '', password: '', username: '' });
 				}
+				setloading(false);
 			})
 			.catch((err) => {
 				console.log(err);
-				seterr('Some internal server error. Please try again after some time.');
-
-				setloading(false);
 			});
 	};
 	return (
 		<div className="flex h-screen flex-col justify-center items-center bg-gray-50">
 			<FcOldTimeCamera
 				size={'3rem'}
-				style={{ position: 'absolute', top: 70, marginBottom: '1rem' }}
+				style={{ position: 'absolute', top: 50, marginBottom: '1rem' }}
 			/>
 			<Form>
 				{error && <Error message={error} />}
+				{success && <Success message={success} />}
 				<Form.Base onSubmit={submitForm} method="POST">
-					<Form.Title>Login</Form.Title>
+					<Form.Title>Create an acoount</Form.Title>
 					<Form.Group>
+						<Form.Input
+							type="text"
+							value={state.name}
+							placeholder="Name"
+							name="name"
+							onChange={handleChange}
+						/>
+						<Form.Input
+							type="email"
+							placeholder="Email"
+							name="email"
+							value={state.email}
+							onChange={handleChange}
+						/>
 						<Form.Input
 							type="text"
 							value={state.username}
@@ -82,16 +98,14 @@ const Login = (props) => {
 						/>
 					</Form.Group>
 					<Form.Submit type="submit" disabled={loading}>
-						Login
+						Register
 					</Form.Submit>
 				</Form.Base>
 				<Form.Bottom>
-					Don't have an account?
-					<Form.Link to="/register">Register here</Form.Link>
+					Already have an account?
+					<Form.Link to="/signin">Login here</Form.Link>
 				</Form.Bottom>
 			</Form>
 		</div>
 	);
-};
-
-export default Login;
+}

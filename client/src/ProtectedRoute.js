@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Redirect, Route } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, ...rest }) => {
-	const token = localStorage.getItem("authToken");
+	const token = localStorage.getItem('authToken');
 
 	return (
 		<Route
 			{...rest}
 			render={() => {
-				return token ? children : <Redirect to="/login" />;
+				return token ? children : <Redirect to="/signin" />;
 			}}
 		/>
 	);
