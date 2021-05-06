@@ -2,7 +2,7 @@ const container = ({ children, ...rest }) => {
 	return (
 		<div
 			{...rest}
-			className="flex flex-col w-full md:w-1/2 h-auto bg-white rounded-lg p-4"
+			className="flex flex-col items-center w-full h-auto bg-white rounded-lg p-4"
 		>
 			{children}
 		</div>
