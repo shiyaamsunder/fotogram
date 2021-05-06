@@ -1,4 +1,4 @@
-import { Container, Link, LinksContainer, Title } from './styles';
+import { Container, Link, LinksContainer, Title } from './styles/header';
 
 export default function Header({ children, ...restProps }) {
 	return <Container {...restProps}>{children}</Container>;
