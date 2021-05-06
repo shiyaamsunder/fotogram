@@ -8,11 +8,15 @@ module.exports = {
 		enabled: process.env.REACT_APP_ENV === 'production',
 		content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
 	},
-	darkMode: false, // or 'media' or 'class'
+	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		extend: {
 			colors: {
+				dark: '#121212',
+				'dark-50': '#232323',
 				purple: {
+					primary: '#8033de',
+					variant: '#A977EA',
 					50: '#f9f5fd',
 					100: '#f2ebfc',
 					200: '#dfccf7',
