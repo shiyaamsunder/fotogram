@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FcOldTimeCamera } from 'react-icons/fc';
 import { REGISTER } from '../config/urls';
-import Form from '../components/Form';
+import Form from '../components/form';
 import Error from '../components/UI/Error';
 import Success from '../components/UI/Success';
 
@@ -65,7 +65,7 @@ export default function SignUp() {
 				{error && <Error message={error} />}
 				{success && <Success message={success} />}
 				<Form.Base onSubmit={submitForm} method="POST">
-					<Form.Title>Create an acoount</Form.Title>
+					<Form.Title>Create an account</Form.Title>
 					<Form.Group>
 						<Form.Input
 							type="text"

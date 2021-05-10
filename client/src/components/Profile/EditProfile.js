@@ -3,7 +3,7 @@ import { USER, USER_UPDATE } from '../../config/urls';
 import Error from '../UI/Error';
 import Success from '../UI/Success';
 import Context from '../../store/Context';
-import Form from '../Form';
+import Form from '../form';
 import TopBarProgress from 'react-topbar-progress-indicator';
 
 const EditProfile = () => {
@@ -119,7 +119,7 @@ const EditProfile = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center mt-16 p-8 mb-16 w-full md:w-1/2 mx-auto">
+		<div className="flex flex-col items-center mt-16 p-8 mb-16 w-full mx-auto">
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
 			{loading ? <TopBarProgress /> : null}

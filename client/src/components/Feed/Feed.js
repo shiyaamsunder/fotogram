@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { IoChatbubbleOutline, IoHeartOutline, IoHeart } from "react-icons/io5";
-import { Link } from "react-router-dom";
-import TopBarProgress from "react-topbar-progress-indicator";
-import { BASE_URL, LIKE, FETCH_COMMENTS, COMMENT } from "../../config/urls";
-import Context from "../../store/Context";
-import Loading from "../UI/Loading";
-import Comment from "./Comment";
-import { HiDotsVertical } from "react-icons/hi";
-import FeedMenu from "./FeedMenu";
-import moment from "moment";
+import React, { useContext, useEffect, useState } from 'react';
+import { IoChatbubbleOutline, IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
+import TopBarProgress from 'react-topbar-progress-indicator';
+import { LIKE, FETCH_COMMENTS, COMMENT } from '../../config/urls';
+import Context from '../../store/Context';
+import CommentItem from './CommentItem';
+import { HiDotsVertical } from 'react-icons/hi';
+import FeedMenu from './FeedMenu';
+import moment from 'moment';
+import Input from '../UI/Input/Input';
 
 const Feed = ({
 	feed,
@@ -27,20 +27,20 @@ const Feed = ({
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [comments, setcomments] = useState([]);
-	const [comment, setcomment] = useState("");
+	const [comment, setcomment] = useState('');
 	const [isDisabled, setisdisabled] = useState(true);
 	const [isLoading, setisloading] = useState(false);
 	const [isFeedMenuOpen, setIsFeedMenuOpen] = useState(false);
 	const { feeds } = globalState;
 
-	let feed_menu_items = [{ name: "Share" }, { name: "Delete" }];
+	let feed_menu_items = [{ name: 'Share' }, { name: 'Delete' }];
 	if (user._id !== current_user_id) {
 		feed_menu_items.pop();
 	}
 
 	const likePost = (feed_id, user_id) => {
 		const new_feeds = feeds.filter((feed) => {
-			if (feed._id == feed_id) {
+			if (feed._id === feed_id) {
 				if (already_liked) {
 					feed.likeCount -= 1;
 				} else {
@@ -50,12 +50,12 @@ const Feed = ({
 			}
 			return feeds;
 		});
-		globalDispatch({ type: "SET_FEEDS", payload: { feeds: new_feeds } });
+		globalDispatch({ type: 'SET_FEEDS', payload: { feeds: new_feeds } });
 
 		fetch(LIKE, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
@@ -69,9 +69,9 @@ const Feed = ({
 
 	const postComment = (feed_id, user_id) => {
 		fetch(COMMENT, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
@@ -83,7 +83,7 @@ const Feed = ({
 			.then((res) => res.json())
 			.then((data) => {
 				fetchComments(feed_id);
-				setcomment("");
+				setcomment('');
 			});
 	};
 
@@ -119,12 +119,12 @@ const Feed = ({
 	const initialAvatar = `https://ui-avatars.com/api/?name=${name}&uppercase="false"?background=random`;
 
 	return (
-		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg relative">
+		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg dark:bg-dark-50 border-none relative transition duration-100">
 			<div className="flex  items-center justify-between rounded-sm h-auto ml-2  ">
 				<div className="flex items-center justify-start ">
 					<img
 						src={!profile_picture ? initialAvatar : profile_picture}
-						alt="profile picture"
+						alt="profile"
 						className="rounded-full object-cover w-10 h-10 mr-1"
 					/>
 					<h3 className="text-lg font-semibold h-full text-purple-600">
@@ -140,7 +140,7 @@ const Feed = ({
 					}}
 					className="w-6 h-6 rounded-full hover:bg-gray-300  cursor-pointer mr-2 flex items-center justify-center"
 				>
-					<HiDotsVertical color={"gray"} />
+					<HiDotsVertical color={'gray'} />
 				</div>
 
 				{isFeedMenuOpen ? (
@@ -160,7 +160,7 @@ const Feed = ({
 				<img
 					src={picture}
 					alt=""
-					className={"object-cover w-full"}
+					className={'object-cover w-full'}
 					onClick={toggleModal}
 				/>
 
@@ -169,7 +169,7 @@ const Feed = ({
 						{already_liked ? (
 							<IoHeart
 								className="text-purple-500 hover:text-purple-400 cursor-pointer mr-2"
-								size={"1.6rem"}
+								size={'1.6rem'}
 								onClick={() => {
 									likePost(feed_id, current_user_id);
 								}}
@@ -177,7 +177,7 @@ const Feed = ({
 						) : (
 							<IoHeartOutline
 								className="hover:text-purple-500 cursor-pointer mr-2"
-								size={"1.6rem"}
+								size={'1.6rem'}
 								onClick={() => {
 									likePost(feed_id, current_user_id);
 								}}
@@ -186,7 +186,7 @@ const Feed = ({
 
 						<IoChatbubbleOutline
 							className="hover:text-purple-500 cursor-pointer"
-							size={"1.5rem"}
+							size={'1.5rem'}
 							onClick={() => {
 								setIsOpen(!isOpen);
 								fetchComments(feed_id);
@@ -215,7 +215,7 @@ const Feed = ({
 
 				<div className="flex flex-col items-center justify-center w-full mx-2 p-2">
 					{isOpen && isLoading ? <TopBarProgress /> : null}
-					{isOpen && comments.length == 0 ? (
+					{isOpen && comments.length === 0 ? (
 						<span className="text-center text-sm font-semibold h-auto p-1 w-3/4 rounded-md mx-auto border border-gray-200">
 							Wow, so empty
 						</span>
@@ -223,13 +223,11 @@ const Feed = ({
 					{isOpen ? (
 						<>
 							{comments.map((comment) => {
-								return <Comment comments={comment} key={comment._id} />;
+								return <CommentItem comments={comment} key={comment._id} />;
 							})}
 							<div className="p-1 mx-1 w-full flex items-center justify-between">
-								<input
+								<Input
 									type="text"
-									className="input h-10 w-full mr-1"
-									placeholder="Add a comment"
 									value={comment}
 									onChange={(event) => handleChange(event)}
 								/>

@@ -1,12 +1,12 @@
-import React from "react";
-import Comment from "../Comment";
+import React from 'react';
+import CommentItem from '../CommentItem';
 
 const FeedModalComments = ({ comments }) => {
 	return (
 		<div className="w-full h-40 max-h-48 mt-2 overflow-y-scroll flex">
 			{comments.length > 0 ? (
 				comments.map((comment) => {
-					return <Comment comments={comment} key={comment._id} />;
+					return <CommentItem comments={comment} key={comment._id} />;
 				})
 			) : (
 				<span className="text-center text-sm font-semibold h-auto p-1 w-3/4 rounded-md mx-auto border border-gray-200">

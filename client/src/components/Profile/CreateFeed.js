@@ -4,7 +4,7 @@ import Success from '../UI/Success';
 import { motion } from 'framer-motion';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import { Container } from '../../layout';
-import Form from '../Form';
+import Form from '../form';
 
 const CreateFeed = () => {
 	const [state, setstate] = useState({

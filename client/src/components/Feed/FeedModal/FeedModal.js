@@ -1,25 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Comment from "../Comment";
-import { BASE_URL, FETCH_COMMENTS, COMMENT, LIKE } from "../../../config/urls";
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { BASE_URL, FETCH_COMMENTS, COMMENT, LIKE } from '../../../config/urls';
 import {
 	IoChatbubbleOutline,
 	IoHeart,
 	IoHeartOutline,
 	IoClose,
-} from "react-icons/io5";
-import Context from "../../../store/Context";
-import FeedModalHeader from "./FeedModalHeader";
-import RightPane from "./RightPane";
+} from 'react-icons/io5';
+import Context from '../../../store/Context';
+import FeedModalHeader from './FeedModalHeader';
+import RightPane from './RightPane';
 
 const FeedModal = ({ id, user, currentUser_id, toggleModal }) => {
 	const { profile_picture, username } = user;
 	const [currentFeed, setcurrentFeed] = useState({});
 	const [comments, setcomments] = useState([]);
-	const [comment, setcomment] = useState("");
+	const [comment, setcomment] = useState('');
 	const [isDisabled, setisdisabled] = useState(true);
 	const { globalState, globalDispatch } = useContext(Context);
-	let token = localStorage.getItem("authToken");
+	let token = localStorage.getItem('authToken');
 	const { feeds } = globalState;
 
 	useEffect(() => {
@@ -50,12 +49,12 @@ const FeedModal = ({ id, user, currentUser_id, toggleModal }) => {
 			}
 			return feeds;
 		});
-		globalDispatch({ type: "SET_FEEDS", payload: { feeds: _feeds } });
+		globalDispatch({ type: 'SET_FEEDS', payload: { feeds: _feeds } });
 
 		fetch(LIKE, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
@@ -89,9 +88,9 @@ const FeedModal = ({ id, user, currentUser_id, toggleModal }) => {
 
 	const postComment = (feed_id, user_id) => {
 		fetch(COMMENT, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
@@ -103,7 +102,7 @@ const FeedModal = ({ id, user, currentUser_id, toggleModal }) => {
 			.then((res) => res.json())
 			.then((data) => {
 				fetchComments(feed_id);
-				setcomment("");
+				setcomment('');
 			});
 	};
 

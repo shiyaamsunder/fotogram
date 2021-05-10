@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import {
 	HiOutlineHome,
@@ -17,7 +17,7 @@ import Header from '../components/header';
 export default function Navbar() {
 	const history = useHistory();
 	const location = useLocation();
-	const [username, setusername] = useState('');
+	// const [username, setusername] = useState('');
 	const id = localStorage.getItem('id');
 	const token = localStorage.getItem('authToken');
 	const { globalState, globalDispatch } = useContext(Context);
@@ -31,7 +31,7 @@ export default function Navbar() {
 			.then((res) => res.json())
 			.then((data) => {
 				if (mounted) {
-					setusername(data.username);
+					// setusername(data.username);
 					globalDispatch({ type: 'SET_USER', payload: { user: data } });
 				}
 			});
