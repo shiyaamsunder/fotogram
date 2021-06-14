@@ -14,6 +14,7 @@
     "react-topbar-progress-indicator": "^4.1.0",
     "socket.io-client": "^4.0.1",
     "uuid": "^8.3.2",
+    "npm-run-all": "^4.1.5",
     "postcss-cli": "^8.3.1"
   },
   "scripts": {
@@ -57,7 +58,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",
-    "npm-run-all": "^4.1.5",
     "postcss": "^8.2.13",
     "tailwindcss": "^2.1.2"
   }
