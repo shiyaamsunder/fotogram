@@ -1,7 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 require('dotenv').config();
 module.exports = {
-	mode: 'jit',
 	future: {
 		removeDeprecatedGapUtilities: true,
 	},
