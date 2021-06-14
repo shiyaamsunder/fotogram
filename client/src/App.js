@@ -12,34 +12,33 @@ import ChatPage from './components/Chat/ChatPage';
 import SignIn from './pages/signin';
 import SignUp from './pages/signup';
 import { Navbar } from './containers';
+import { Wrapper } from './layout';
 
 function App() {
 	let location = useLocation();
 
 	return (
-		<div>
-			<AnimatePresence>
-				<GlobalStateProvider>
-					<Switch location={location} key={location.key}>
-						<Route path="/signup" component={SignUp} />
-						<Route path="/signin" component={SignIn} />
-						<ProtectedRoute>
-							<Navbar />
-							<div className="">
-								<Route exact path="/" component={Home} />
-								<Route path="/home" component={Home} />
-								<Route path="/profile/:username" component={Profile} />
-								<Route path="/create" exact component={CreateFeed} />
-								<Route path="/edit" exact component={EditProfile} />
-								<Route path="/search" exact component={Search} />
-								<Route path="/chat/:username" component={ChatPage} />
-								<Route path="/chat" exact component={ChatHome} />
-							</div>
-						</ProtectedRoute>
-					</Switch>
-				</GlobalStateProvider>
-			</AnimatePresence>
-		</div>
+		<AnimatePresence>
+			<GlobalStateProvider>
+				<Switch location={location} key={location.key}>
+					<Route path="/signup" component={SignUp} />
+					<Route path="/signin" component={SignIn} />
+					<ProtectedRoute>
+						<Navbar />
+						<Wrapper>
+							<Route exact path="/" component={Home} />
+							<Route path="/home" component={Home} />
+							<Route path="/profile/:username" component={Profile} />
+							<Route path="/create" exact component={CreateFeed} />
+							<Route path="/edit" exact component={EditProfile} />
+							<Route path="/search" exact component={Search} />
+							<Route path="/chat/:username" component={ChatPage} />
+							<Route path="/chat" exact component={ChatHome} />
+						</Wrapper>
+					</ProtectedRoute>
+				</Switch>
+			</GlobalStateProvider>
+		</AnimatePresence>
 	);
 }
 

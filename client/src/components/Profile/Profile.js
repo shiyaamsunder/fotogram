@@ -1,20 +1,20 @@
-import { motion } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { BASE_URL, PROFILE, USER, FOLLOW, UNFOLLOW } from "../../config/urls";
-import { Ripple } from "react-css-spinners";
-import FeedModal from "../Feed/FeedModal/FeedModal";
-import Backdrop from "../UI/Backdrop";
-import Loading from "../UI/Loading";
-import TopBarProgress from "react-topbar-progress-indicator";
-import Context from "../../store/Context";
+import { motion } from 'framer-motion';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import { BASE_URL, PROFILE, USER, FOLLOW, UNFOLLOW } from '../../config/urls';
+import { Ripple } from 'react-css-spinners';
+import FeedModal from '../Feed/FeedModal/FeedModal';
+import Backdrop from '../UI/Backdrop';
+import Loading from '../UI/Loading';
+import TopBarProgress from 'react-topbar-progress-indicator';
+import Context from '../../store/Context';
 
 const Profile = () => {
 	let params = useParams();
 	const history = useHistory();
 	const location = useLocation();
-	let token = localStorage.getItem("authToken");
-	const [followStatus, setFollowStatus] = useState("Follow");
+	let token = localStorage.getItem('authToken');
+	const [followStatus, setFollowStatus] = useState('Follow');
 	const [followLoading, setFollowLoading] = useState(false);
 	const [isFollowing, setIsFollowing] = useState(false);
 	// const [profile, setprofile] = useState({
@@ -23,40 +23,40 @@ const Profile = () => {
 	// 	influencers: [],
 	// });
 	const [user, setuser] = useState({
-		username: "",
-		profile_picture: "",
+		username: '',
+		profile_picture: '',
 		id: null,
-		account_type: "",
-		bio: "",
+		account_type: '',
+		bio: '',
 	});
 	const [loggedInUser, setloggedInUser] = useState({
-		username: "",
-		profile_picture: "",
+		username: '',
+		profile_picture: '',
 		id: null,
-		account_type: "",
-		bio: "",
+		account_type: '',
+		bio: '',
 	});
 	const [isLoading, setisloading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentFeed, setCurrentFeed] = useState({});
-	let loggedInUser_id = localStorage.getItem("id");
+	let loggedInUser_id = localStorage.getItem('id');
 	const { globalState, globalDispatch } = useContext(Context);
 	const { profile } = globalState;
 
 	// Loading bar config
 	TopBarProgress.config({
 		barColors: {
-			0: "#8b5cf6",
-			0.5: "#7c3aed",
-			"1.0": "#a78bfa",
+			0: '#8b5cf6',
+			0.5: '#7c3aed',
+			'1.0': '#a78bfa',
 		},
 		shadowBlur: 5,
 	});
 
 	const handleLogout = () => {
-		localStorage.removeItem("authToken");
-		localStorage.removeItem("user");
-		history.replace("/login");
+		localStorage.removeItem('authToken');
+		localStorage.removeItem('user');
+		history.replace('/login');
 	};
 
 	useEffect(() => {
@@ -74,7 +74,7 @@ const Profile = () => {
 
 	useEffect(() => {
 		setisloading(true);
-		fetch(`${USER}${loggedInUser_id}` + "/", {
+		fetch(`${USER}${loggedInUser_id}` + '/', {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -93,7 +93,7 @@ const Profile = () => {
 	}, []);
 
 	const redirectToEditProfile = () => {
-		history.push("/edit");
+		history.push('/edit');
 	};
 
 	const toggleModal = () => {
@@ -116,7 +116,7 @@ const Profile = () => {
 					bio: data.user.bio,
 				});
 
-				globalDispatch({ type: "SET_FEEDS", payload: { feeds: data.feeds } });
+				globalDispatch({ type: 'SET_FEEDS', payload: { feeds: data.feeds } });
 
 				let accepted_followers = data.followers.filter((follower) => {
 					return follower.status === 1;
@@ -142,17 +142,17 @@ const Profile = () => {
 						);
 						console.log(checkInRequestedFollowers);
 						if (checkInRequestedFollowers !== undefined) {
-							setFollowStatus("Cancel request");
+							setFollowStatus('Cancel request');
 							setIsFollowing(true);
 						} else {
-							setFollowStatus("Follow");
+							setFollowStatus('Follow');
 						}
 					} else {
-						setFollowStatus("Unfollow");
+						setFollowStatus('Unfollow');
 					}
 				}
 
-				globalDispatch({ type: "SET_PROFILE", payload: { profile: data } });
+				globalDispatch({ type: 'SET_PROFILE', payload: { profile: data } });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -160,34 +160,34 @@ const Profile = () => {
 	};
 
 	const connectionAction = (influencer_id, user_id) => {
-		if (followStatus === "Follow") {
+		if (followStatus === 'Follow') {
 			followUser(influencer_id, user_id);
 		}
 
-		if (followStatus === "Cancel request" || followStatus === "Unfollow") {
+		if (followStatus === 'Cancel request' || followStatus === 'Unfollow') {
 			unFollowUser(influencer_id, user_id);
 		}
 	};
 	const followUser = (influencer_id, user_id) => {
 		setFollowLoading(true);
 		fetch(FOLLOW, {
-			method: "POST",
+			method: 'POST',
 			body: JSON.stringify({
 				influencer: influencer_id,
 				follower: user_id,
 			}),
 			headers: {
 				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.message === "Request Sent") {
-					setFollowStatus("Cancel request");
+				if (data.message === 'Request Sent') {
+					setFollowStatus('Cancel request');
 					setFollowLoading(false);
 				} else {
-					setFollowStatus("Unfollow");
+					setFollowStatus('Unfollow');
 					setFollowLoading(false);
 				}
 			});
@@ -200,16 +200,16 @@ const Profile = () => {
 		};
 		setFollowLoading(true);
 		fetch(UNFOLLOW, {
-			method: "POST",
+			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {
 				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setFollowStatus("Follow");
+				setFollowStatus('Follow');
 				setFollowLoading(false);
 			});
 	};
@@ -217,20 +217,20 @@ const Profile = () => {
 	return !isLoading ? (
 		<>
 			<motion.div
-				initial={{ x: "400px" }}
+				initial={{ x: '400px' }}
 				animate={{ x: 0 }}
-				exit={{ x: "100vw" }}
-				className={`w-full md:w-3/4 h-full mt-14 mx-auto mb-16 ${
-					isOpen ? "overflow-hidden" : ""
+				exit={{ x: '100vw' }}
+				className={`w-full md:w-3/4 h-full pt-14 mx-auto pb-16 ${
+					isOpen ? 'overflow-hidden' : ''
 				}`}
 			>
 				{followLoading ? <TopBarProgress /> : null}
-				<div className="w-full bg-gray-100 h-auto p-2 mx-auto rounded-b-md">
+				<div className="w-full bg-gray-100 h-auto p-2 mx-auto rounded-b-md dark:bg-dark-25 dark:text-white">
 					<div className="flex h-18 items-center justify-between">
 						<img
 							className="rounded-full object-cover w-20 h-20 "
 							src={
-								user.profile_picture === ""
+								user.profile_picture === ''
 									? `https://ui-avatars.com/api/?name=${user.username}`
 									: user.profile_picture
 							}
@@ -261,8 +261,8 @@ const Profile = () => {
 						</div>
 					</div>
 				</div>
-				{location.pathname.split("/")[2] === loggedInUser.username ? (
-					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
+				{location.pathname.split('/')[2] === loggedInUser.username ? (
+					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md dark:bg-dark-25 dark:text-white ">
 						<button
 							className="btn btn-md btn-primary w-full mx-2"
 							onClick={redirectToEditProfile}
@@ -278,12 +278,12 @@ const Profile = () => {
 						</button>
 					</div>
 				) : (
-					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md ">
+					<div className="w-full flex justify-evenly items-center py-3 bg-gray-100 rounded-md dark:bg-dark-25 dark:text-white ">
 						<button
 							className={`btn btn-md ${
-								followStatus === "Unfollow" || followStatus === "Cancel request"
-									? "btn-secondary"
-									: "btn-primary"
+								followStatus === 'Unfollow' || followStatus === 'Cancel request'
+									? 'btn-secondary'
+									: 'btn-primary'
 							} w-full mx-2`}
 							onClick={() => connectionAction(user.id, loggedInUser.id)}
 						>
@@ -301,14 +301,14 @@ const Profile = () => {
 						</Link>
 					</div>
 				)}
-				{user.account_type === "private" &&
+				{user.account_type === 'private' &&
 				user.id !== loggedInUser_id &&
 				isFollowing ? (
 					<h1 className="font-bold text-xl text-center">
 						This account is private
 					</h1>
 				) : (
-					<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-2">
+					<div className="w-full grid grid-cols-3 mx-auto gap-5 h-auto mt-2 dark:text-white ">
 						{profile.feeds && profile.feeds.length > 0 ? (
 							profile.feeds.map((feed) => {
 								return (

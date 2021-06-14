@@ -56,7 +56,7 @@ export default function SignUp() {
 			});
 	};
 	return (
-		<div className="flex h-screen flex-col justify-center items-center bg-gray-50">
+		<div className="flex h-screen flex-col justify-center items-center bg-gray-50 dark:bg-dark-25 dark:text-gray-50">
 			<FcOldTimeCamera
 				size={'3rem'}
 				style={{ position: 'absolute', top: 50, marginBottom: '1rem' }}

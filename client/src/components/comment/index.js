@@ -4,7 +4,7 @@ export default function Comment({ children, ...restProps }) {
 	return (
 		<div
 			{...restProps}
-			className="p-1 border-b border-gray-200 w-full rounded flex items-center my-1"
+			className="p-1 border-b dark:text-white border-gray-200 w-full rounded flex items-center my-1"
 		>
 			{children}
 		</div>
@@ -29,7 +29,10 @@ Comment.ProfilePicture = function commentProfilePicture({
 
 Comment.User = function commentUser({ children, ...restprops }) {
 	return (
-		<Link {...restprops} className="font-semibold text-xs text-purple-700">
+		<Link
+			{...restprops}
+			className="font-semibold text-xs dark:text-purple-400 text-purple-700"
+		>
 			{children}
 		</Link>
 	);

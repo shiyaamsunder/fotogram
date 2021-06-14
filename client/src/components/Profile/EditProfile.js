@@ -119,7 +119,7 @@ const EditProfile = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center mt-16 p-8 mb-16 w-full mx-auto">
+		<div className="flex flex-col items-center mt-14 p-8 mb-16 w-full mx-auto">
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
 			{loading ? <TopBarProgress /> : null}

@@ -119,7 +119,7 @@ const Feed = ({
 	const initialAvatar = `https://ui-avatars.com/api/?name=${name}&uppercase="false"?background=random`;
 
 	return (
-		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg dark:bg-dark-50 border-none relative transition duration-100">
+		<div className="w-full rounded-md border border-gray-300 my-5 md:w-96 h-auto pt-2 md:rounded-lg dark:bg-dark-50 dark:border-dark dark:shadow-md-dark relative transition duration-100">
 			<div className="flex  items-center justify-between rounded-sm h-auto ml-2  ">
 				<div className="flex items-center justify-start ">
 					<img
@@ -127,7 +127,7 @@ const Feed = ({
 						alt="profile"
 						className="rounded-full object-cover w-10 h-10 mr-1"
 					/>
-					<h3 className="text-lg font-semibold h-full text-purple-600">
+					<h3 className="text-lg font-semibold h-full text-purple-600 dark:text-gray-200">
 						<Link className="h-full py-4 px-2" to={`/profile/${name}`}>
 							{name}
 						</Link>
@@ -185,7 +185,7 @@ const Feed = ({
 						)}
 
 						<IoChatbubbleOutline
-							className="hover:text-purple-500 cursor-pointer"
+							className="dark:text-white hover:text-purple-500 cursor-pointer"
 							size={'1.5rem'}
 							onClick={() => {
 								setIsOpen(!isOpen);
@@ -194,7 +194,7 @@ const Feed = ({
 						/>
 					</div>
 
-					<span className="ml-1">
+					<span className="ml-1 dark:text-gray-200">
 						{!likeCount
 							? null
 							: likeCount > 1
@@ -204,8 +204,10 @@ const Feed = ({
 
 					<div className="ml-1 flex flex-col">
 						<div className="flex">
-							<span className="font-bold text-md mr-1">{name}</span>
-							<p>{caption}</p>
+							<span className="font-semibold text-md mr-1 dark:text-gray-300">
+								{name}
+							</span>
+							<p className="dark:text-white">{caption}</p>
 						</div>
 						<span className="text-sm font-light italic text-gray-400">
 							{timestamp}

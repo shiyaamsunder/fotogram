@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { v4 as uuid } from "uuid";
-import { DELETE_FEED } from "../../config/urls";
-import Context from "../../store/Context";
+import React, { useContext } from 'react';
+import { v4 as uuid } from 'uuid';
+import { DELETE_FEED } from '../../config/urls';
+import Context from '../../store/Context';
 
 const FeedMenu = ({ items, toggle, feed_id, user_id }) => {
-	const token = localStorage.getItem("authToken");
+	const token = localStorage.getItem('authToken');
 	const { globalState, globalDispatch } = useContext(Context);
 	const { feeds, user } = globalState;
 
 	const feedMenuAction = (toggle, action, feed_id) => {
-		if (action === "Delete") {
+		if (action === 'Delete') {
 			deleteFeed(feed_id);
 		}
 
@@ -20,7 +20,7 @@ const FeedMenu = ({ items, toggle, feed_id, user_id }) => {
 		let new_feeds = feeds.filter((feed) => {
 			return feed._id !== feed_id;
 		});
-		globalDispatch({ type: "SET_FEEDS", payload: { feeds: new_feeds } });
+		globalDispatch({ type: 'SET_FEEDS', payload: { feeds: new_feeds } });
 		fetch(DELETE_FEED + `/${feed_id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -35,11 +35,11 @@ const FeedMenu = ({ items, toggle, feed_id, user_id }) => {
 			});
 	};
 	return (
-		<div className="w-60 h-auto bg-white border border-gray-200 rounded-md ">
+		<div className="w-60 h-auto bg-white border border-gray-200 rounded-md dark:bg-dark-100 dark:shadow-md-dark dark:text-white dark:border-none ">
 			{items.map((item) => {
 				return (
 					<p
-						className="w-full p-2 border-b border-gray-200 hover:bg-gray-300 cursor-pointer rounded-md"
+						className="w-full p-2 border-b dark:border-none border-gray-200 hover:bg-gray-300 cursor-pointer rounded-md"
 						onClick={() => {
 							feedMenuAction(toggle, item.name, feed_id);
 						}}

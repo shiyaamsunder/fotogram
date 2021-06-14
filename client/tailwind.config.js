@@ -1,6 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 require('dotenv').config();
 module.exports = {
+	mode: 'jit',
 	future: {
 		removeDeprecatedGapUtilities: true,
 	},
@@ -11,9 +12,16 @@ module.exports = {
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		extend: {
+			boxShadow: {
+				'md-dark':
+					'0 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.23)',
+			},
 			colors: {
 				dark: '#121212',
-				'dark-50': '#232323',
+				'dark-25': '#232323',
+				'dark-50': '#252525',
+				'dark-75': '#2a2a2a',
+				'dark-100': '#2e2e2e',
 				purple: {
 					primary: '#8033de',
 					variant: '#A977EA',
@@ -35,7 +43,10 @@ module.exports = {
 		},
 	},
 	variants: {
-		extend: { opacity: ['disabled'] },
+		extend: {
+			opacity: ['disabled'],
+			boxShadow: ['dark'],
+		},
 	},
 	plugins: [],
 };

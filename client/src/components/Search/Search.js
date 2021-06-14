@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Redirect } from "react-router";
-import { Link } from "react-router-dom";
-import TopBarProgress from "react-topbar-progress-indicator";
-import { RANDOM, USERS_ALL } from "../../config/urls";
-import Context from "../../store/Context";
-import FeedModal from "../Feed/FeedModal/FeedModal";
-import Backdrop from "../UI/Backdrop";
+import React, { useContext, useEffect, useState } from 'react';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
+import TopBarProgress from 'react-topbar-progress-indicator';
+import { RANDOM, USERS_ALL } from '../../config/urls';
+import Context from '../../store/Context';
+import FeedModal from '../Feed/FeedModal/FeedModal';
+import Backdrop from '../UI/Backdrop';
+import Input from '../UI/Input/Input';
 
 const Search = () => {
 	const [randomFeeds, setRandomFeeds] = useState();
@@ -14,17 +15,17 @@ const Search = () => {
 	const { globalDispatch } = useContext(Context);
 	const [loading, setloading] = useState(false);
 	const [users, setusers] = useState();
-	const [searchValue, setSearchValue] = useState("");
+	const [searchValue, setSearchValue] = useState('');
 	const [searchedUsers, setSearchedUsers] = useState();
 
-	let token = localStorage.getItem("authToken");
-	let user_id = localStorage.getItem("id");
+	let token = localStorage.getItem('authToken');
+	let user_id = localStorage.getItem('id');
 
 	TopBarProgress.config({
 		barColors: {
-			0: "#8b5cf6",
-			0.5: "#7c3aed",
-			"1.0": "#a78bfa",
+			0: '#8b5cf6',
+			0.5: '#7c3aed',
+			'1.0': '#a78bfa',
 		},
 		shadowBlur: 5,
 	});
@@ -40,7 +41,7 @@ const Search = () => {
 			.then((data) => {
 				setRandomFeeds(data.feeds);
 				globalDispatch({
-					type: "SET_RANDOM_FEEDS",
+					type: 'SET_RANDOM_FEEDS',
 					payload: { random: data.feeds },
 				});
 				setloading(false);
@@ -86,11 +87,10 @@ const Search = () => {
 	};
 
 	return (
-		<div className="mt-14 flex flex-col items-center ">
+		<div className="pt-16 flex flex-col items-center ">
 			{loading ? <TopBarProgress /> : null}
-			<input
+			<Input
 				type="text"
-				className="input border-2 border-purple-500"
 				value={searchValue}
 				placeholder="Search for users"
 				onChange={handleChange}

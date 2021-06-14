@@ -44,7 +44,7 @@ export default function Navbar() {
 	return (
 		<>
 			<div
-				className={`flex fixed w-full top-0 items-center py-2 px-4 justify-between md:hidden h-14 border-b border-gray-200 bg-white z-10`}
+				className={`flex fixed w-full top-0 items-center py-2 px-4 justify-between md:hidden h-14  bg-white z-10 dark:bg-dark-100`}
 			>
 				{location.pathname === '/create' ||
 				location.pathname.includes('chat') ||
@@ -65,7 +65,7 @@ export default function Navbar() {
 						</NavLink>
 					</>
 				)}
-				<h1 className={`font-semibold text-purple-700 text-xl`}>
+				<h1 className={`font-semibold text-purple-400 text-xl`}>
 					{location.pathname.includes('/chat/')
 						? `@${location.pathname.split('/')[2]}`
 						: location.pathname === '/chat'

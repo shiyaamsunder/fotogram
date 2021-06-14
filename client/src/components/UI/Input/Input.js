@@ -9,7 +9,8 @@ const Input = (props) => {
 		sm: 'h-8 w-1/2 px-3 py-3 rounded-md',
 	};
 	let styles = {
-		primary: 'input border-2 border-purple-400  focus:border-purple-600',
+		primary:
+			'input border-2 border-purple-400  focus:border-purple-600 input-dark',
 		error: 'border-2 border-red-400 focus:border-red-600',
 	};
 

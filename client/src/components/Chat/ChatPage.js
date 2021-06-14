@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { GET_CONVO } from "../../config/urls";
-import io from "socket.io-client";
-import { v4 as uuid } from "uuid";
+import React, { useEffect, useState } from 'react';
+import { GET_CONVO } from '../../config/urls';
+import io from 'socket.io-client';
+import { v4 as uuid } from 'uuid';
+import Input from '../UI/Input/Input';
 
 const ChatPage = ({ location }) => {
-	let user1 = localStorage.getItem("id");
+	let user1 = localStorage.getItem('id');
 	let user2 = location.state.user2;
-	const token = localStorage.getItem("authToken");
+	const token = localStorage.getItem('authToken');
 
 	const [chats, setChats] = useState([]);
-	const [message, setmessage] = useState("");
+	const [message, setmessage] = useState('');
 	const [socket, setsocket] = useState();
 
 	useEffect(() => {
@@ -24,7 +25,7 @@ const ChatPage = ({ location }) => {
 		const newSocket = io(document.location.origin, {
 			query: { id: user1 },
 		});
-		newSocket.on("recieve", (chat) => {
+		newSocket.on('recieve', (chat) => {
 			setChats((prev) => [...prev, chat]);
 		});
 		setsocket(newSocket);
@@ -37,7 +38,7 @@ const ChatPage = ({ location }) => {
 	};
 
 	const sendMessage = (message) => {
-		socket.emit("send", {
+		socket.emit('send', {
 			sender: user1,
 			reciever: user2,
 			message: message,
@@ -51,7 +52,7 @@ const ChatPage = ({ location }) => {
 				_id: uuid(),
 			},
 		]);
-		setmessage("");
+		setmessage('');
 	};
 
 	return (
@@ -63,10 +64,10 @@ const ChatPage = ({ location }) => {
 							key={chat._id}
 							className={`block rounded-2xl ${
 								chat.sender === user1
-									? "float-right rounded-br-none bg-purple-500 "
-									: "float-left rounded-bl-none bg-white text-purple-500 border-2 border-purple-500"
-							} clear-both font-semibold  shadow-md text-white p-3 w-auto h-auto m-1`}
-							style={{ maxWidth: "75%", wordWrap: "break-word" }}
+									? 'float-right rounded-br-none bg-purple-500 text-white dark:shadow-md-dark '
+									: 'float-left rounded-bl-none bg-white dark:bg-dark-75 dark:shadow-md-dark dark:text-purple-400 dark:border-purple-400 text-purple-500 border-2 border-purple-500'
+							} clear-both font-semibold   shadow-md p-3 w-auto h-auto m-1`}
+							style={{ maxWidth: '75%', wordWrap: 'break-word' }}
 						>
 							{chat.message}
 						</p>
@@ -75,10 +76,9 @@ const ChatPage = ({ location }) => {
 			</div>
 			{console.log(chats)}
 			<div className="flex w-full p-3 items-center justify-evenly">
-				<input
+				<Input
 					type="text"
 					placeholder="Type something..."
-					className="input border-2 md:w-3/4 border-purple-500"
 					value={message}
 					onChange={(event) => handleChange(event)}
 				/>

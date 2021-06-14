@@ -1,11 +1,11 @@
-import React from "react";
-import { HiOutlinePhotograph } from "react-icons/hi";
+import React from 'react';
+import { HiOutlinePhotograph } from 'react-icons/hi';
 
 const UploadPic = ({ onChange, text, name, width }) => {
 	return (
 		<div
 			className={`btn tracking-wide ${
-				width ? "" : "w-1/2"
+				width ? '' : 'w-1/2'
 			} mx-auto h-auto p-2 border text-gray-500`}
 		>
 			<label
@@ -20,7 +20,7 @@ const UploadPic = ({ onChange, text, name, width }) => {
 					accept="image/x-png,image/gif,image/jpeg"
 					onChange={onChange}
 				/>
-				<HiOutlinePhotograph size={"1.5rem"} />
+				<HiOutlinePhotograph size={'1.5rem'} />
 			</label>
 		</div>
 	);

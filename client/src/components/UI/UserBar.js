@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const UserBar = ({ user, send_state = false, link_state }) => {
 	if (!send_state) {
@@ -8,7 +8,7 @@ const UserBar = ({ user, send_state = false, link_state }) => {
 
 	return (
 		<div
-			className="flex items-center border-b border-gray-200 justify-start h-auto p-3 "
+			className="flex items-center border-b border-gray-200 justify-start h-auto p-3 dark:bg-dark-50 dark:border-dark-75 mb-2 mx-3 rounded-lg  "
 			key={user._id}
 		>
 			<img
@@ -27,8 +27,12 @@ const UserBar = ({ user, send_state = false, link_state }) => {
 					state: link_state,
 				}}
 			>
-				<p className="font-bold text-sm text-purple-500">{user.username}</p>
-				<h3 className="text-md text-gray-800">{user.name}</h3>
+				<p className="font-bold text-sm text-purple-500 dark:text-purple-300">
+					{user.username}
+				</p>
+				<h3 className="text-md text-gray-800 dark:text-gray-100">
+					{user.name}
+				</h3>
 			</Link>
 		</div>
 	);

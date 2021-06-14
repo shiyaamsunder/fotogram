@@ -45,8 +45,10 @@ const Home = (props) => {
 	}, []);
 
 	return !isLoading ? (
-		<motion.div className="flex flex-col h-auto mt-14 mb-14 items-center justify-center dark:bg-dark transition duration-150">
-			<h1 className="text-3xl font-bold text-gray-600 my-5">Your Timeline</h1>
+		<motion.div className="flex flex-col h-auto pt-14 pb-14 items-center justify-center dark:bg-dark transition duration-150">
+			<h1 className="text-3xl font-bold text-gray-600 dark:text-gray-200 my-5">
+				Your Timeline
+			</h1>
 			{feeds &&
 				feeds.map((feed, index) => (
 					<Feed

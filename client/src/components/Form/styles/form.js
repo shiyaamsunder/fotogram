@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Container = ({ children, ...restProps }) => {
 	return (
 		<div
-			className="flex flex-col w-full md:w-2/6 items-center justify-around  p-5"
+			className="flex flex-col w-full md:w-2/6  items-center justify-around  p-5"
 			{...restProps}
 		>
 			{children}
@@ -14,7 +14,10 @@ export const Container = ({ children, ...restProps }) => {
 
 export const Title = ({ children, ...restProps }) => {
 	return (
-		<h1 className="text-4xl font-bold text-gray-700 mt-2" {...restProps}>
+		<h1
+			className="text-4xl font-bold text-gray-700 mt-2 dark:text-gray-50"
+			{...restProps}
+		>
 			{children}
 		</h1>
 	);
@@ -23,7 +26,7 @@ export const Base = ({ children, ...restProps }) => {
 	return (
 		<form
 			method="POST"
-			className="flex flex-col w-full h-auto rounded-lg p-4 bg-white shadow-lg"
+			className="flex flex-col w-full h-auto rounded-lg p-4 shadow-lg dark:bg-dark-50 dark:shadow-md-dark"
 			{...restProps}
 		>
 			{children}
@@ -57,7 +60,7 @@ export const Input = ({ size = 'lg', ...restProps }) => {
 	return (
 		<input
 			{...restProps}
-			className={`${size} input border-2 border-purple-400  focus:border-purple-600 text-gray-700`}
+			className={`${size} input border-2 border-purple-primary  focus:border-purple-600 input-dark`}
 		/>
 	);
 };

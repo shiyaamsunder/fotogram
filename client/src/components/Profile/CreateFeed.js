@@ -105,7 +105,7 @@ const CreateFeed = () => {
 			initial={{ x: '-100px' }}
 			animate={{ x: 0 }}
 			exit={{ x: '-100vw' }}
-			className="flex flex-col justify-items-center items-center mt-20 py-10 h-auto w-full"
+			className="flex flex-col justify-items-center  items-center py-20 h-auto w-full"
 		>
 			{error ? <Error message={error} /> : null}
 			{success ? <Success message={success} /> : null}
@@ -117,7 +117,7 @@ const CreateFeed = () => {
 					className="w-52 mx-auto h-52 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md object-contain"
 				/>
 			) : (
-				<div className="w-52 mx-auto h-52 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md">
+				<div className="w-52 mx-auto h-52 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md dark:text-gray-50">
 					Preview Image
 				</div>
 			)}
