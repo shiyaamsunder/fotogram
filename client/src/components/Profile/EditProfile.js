@@ -3,7 +3,7 @@ import { USER, USER_UPDATE } from '../../config/urls';
 import Error from '../UI/Error';
 import Success from '../UI/Success';
 import Context from '../../store/Context';
-import Form from '../form';
+import Form from '../form/index';
 import TopBarProgress from 'react-topbar-progress-indicator';
 
 const EditProfile = () => {

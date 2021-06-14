@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LOGIN } from '../config/urls';
 import { FcOldTimeCamera } from 'react-icons/fc';
 import Error from '../components/UI/Error';
-import Form from '../components/form';
+import Form from '../components/form/index';
 
 export default function SignIn(props) {
 	const [state, setstate] = useState({

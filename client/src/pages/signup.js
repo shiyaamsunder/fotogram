@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FcOldTimeCamera } from 'react-icons/fc';
 import { REGISTER } from '../config/urls';
-import Form from '../components/form'
+import Form from '../components/form/index';
 import Error from '../components/UI/Error';
 import Success from '../components/UI/Success';
 
